@@ -4,3 +4,4 @@
 
 Code conventions:
 
+camelCase naming - eg. likeThis
