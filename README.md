@@ -23,7 +23,7 @@ camelCase naming - e.g. likeThis
 
 ### Contributors
 
-Harry
+[Harry](https://github.com/N0m0turtle)
 
 David
 
@@ -31,4 +31,4 @@ Pyra
 
 Adrian
 
-Craig
+[Craig](https://github.com/craigm2013)
