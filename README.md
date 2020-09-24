@@ -25,7 +25,7 @@ camelCase naming - e.g. likeThis
 
 [Harry](https://github.com/N0m0turtle)
 
-David
+Dawid
 
 Pyra
 
