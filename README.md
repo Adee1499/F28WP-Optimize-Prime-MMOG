@@ -15,7 +15,7 @@ Folders:
 Full lowercase for project directories with full upercase for abbreviations and underscores to seperate words. - e.g. UI_files; HTML_pages; CSS; images;
 
 Files:
-camelCase with a starting lower case for file names. - e.g. homePage.html; style.css; canvas.js; playerModel.jpg;
+camelCase with a starting lower case for file names. - e.g. homePage.html; style.css; canvas.js; playerModel.jpg; README still in caps because it's special <3
 
 ### Contributors (The gang 😎)
 
