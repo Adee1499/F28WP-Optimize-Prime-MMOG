@@ -16,3 +16,15 @@ Full lowercase for project directories with full upercase for abbreviations and 
 
 Files:
 camelCase with a starting lower case for file names. - e.g. homePage.html; style.css; canvas.js; playerModel.jpg;
+
+### Contributors (The gang 😎)
+
+Harry
+
+David
+
+Pyra
+
+Adrian
+
+Craig
