@@ -14,7 +14,7 @@ camelCase naming - e.g. likeThis
 
 ### Project maintenance conventions:
 
-- **Folders**: Full lowercase for project directories with full upercase for abbreviations and underscores to seperate words. 
+- **Folders**: Start with an upper case for project directories with full upercase for abbreviations and underscores to seperate words. 
     - e.g. UI_files; HTML_pages; CSS; images;
 
 - **Files**: camelCase with a starting lower case for file names.
