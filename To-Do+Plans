@@ -1,9 +1,14 @@
+PAC-MAN
+-In-game features
+--Power Pellets speed up player temporarily
+---Import maze creation algorithm or tesselation system for map size
+--Players kill players
+-Backend
+--Multiple users concurrently
 
-
--   Decide on game, coding conventions
--   Set up web page from which we run the game
--   Breakdown features from game examples to understand implementation
-
-
-
-
+To do:
+-PP/Maze Wall Collision Detection
+-Send/Receive data between clients
+-Maze Creation
+-Asset Creation
+-Pac animations
