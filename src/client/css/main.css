@@ -5,8 +5,8 @@ body {
 }
 
 .playArea {
-    width: 800px;
-    height: 500px;
+    width: 1800px;
+    height: 850px;
     background: #000;
     border: 10px solid #333;
     margin: 30px auto 0;
@@ -16,7 +16,7 @@ body {
 .pacman {
     width: 64px;
     height: 64px;
-    background-image: url("../assets/Pacman.gif");
+    background-image: url("../assets/Pacman_transparent.gif");
     background-size: 64px 64px;
     position: absolute;
 }
