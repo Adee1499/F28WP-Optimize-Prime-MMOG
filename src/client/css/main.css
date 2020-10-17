@@ -16,6 +16,7 @@ body {
 .pacman {
     width: 64px;
     height: 64px;
-    background: yellow;
+    background-image: url("../assets/Pacman.gif");
+    background-size: 64px 64px;
     position: absolute;
 }
