@@ -19,4 +19,5 @@ body {
     background-image: url("../assets/Pacman_transparent.gif");
     background-size: 64px 64px;
     position: absolute;
+    transform: rotate(0.5turn);
 }

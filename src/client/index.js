@@ -19,6 +19,10 @@
     playArea.classList.add('playArea');
     document.body.appendChild(pacman);
     pacman.classList.add('pacman');
+
+    // This variable is used in the rotation of the pacman class in CSS
+    var rotatePac = document.getElementsByClassName('pacman');
+
     pacmanPos.x = (playArea.offsetWidth / 2 + playArea.offsetLeft) - (pacman.offsetWidth / 2);
     pacmanPos.y = (playArea.offsetHeight + playArea.offsetTop) - (pacman.offsetHeight * 2);
     playArea.leftBoundary = playArea.offsetLeft + 10;
@@ -55,16 +59,35 @@
         pacman.style.top = pacmanPos.y + 'px';
     }
 
+
+
+    // Each if statement will rotate the CSS .pacman class accordingly, seems a bit clunky, will need changed
     function keyDown(e) {
         if (e.keyCode === 39) {
             key.right = true;
+
+            for(i=0; i < rotatePac.length; i++){
+                rotatePac[i].style.transform = "rotate(0turn)";
+            }
         } else if (e.keyCode === 37) {
             key.left = true;
+
+            for(i=0; i < rotatePac.length; i++){
+                rotatePac[i].style.transform = "rotate(0.5turn)";
+            }
         }
         if (e.keyCode === 38) {
             key.up = true;
+
+            for(i=0; i < rotatePac.length; i++){
+                rotatePac[i].style.transform = "rotate(0.75turn)";
+            }
         } else if (e.keyCode === 40) {
             key.down = true;
+
+            for(i=0; i < rotatePac.length; i++){
+                rotatePac[i].style.transform = "rotate(0.25turn)";
+            }
         }
     }
 
