@@ -77,12 +77,18 @@
     function keyDown(e) {
         if (e.keyCode === 39) {
             key.right = true;
+            key.down = false;
+            key.up = false;
+            key.left = false;
 
             for(i=0; i < rotatePac.length; i++){
                 rotatePac[i].style.transform = "rotate(0turn)";
             }
         } else if (e.keyCode === 37) {
             key.left = true;
+            key.down = false;
+            key.up = false;
+            key.right = false;
 
             for(i=0; i < rotatePac.length; i++){
                 rotatePac[i].style.transform = "rotate(0.5turn)";
@@ -90,12 +96,18 @@
         }
         if (e.keyCode === 38) {
             key.up = true;
+            key.left = false;
+            key.right = false;
+            key.down = false;
 
             for(i=0; i < rotatePac.length; i++){
                 rotatePac[i].style.transform = "rotate(0.75turn)";
             }
         } else if (e.keyCode === 40) {
             key.down = true;
+            key.left = false;
+            key.right = false;
+            key.up = false;
 
             for(i=0; i < rotatePac.length; i++){
                 rotatePac[i].style.transform = "rotate(0.25turn)";
