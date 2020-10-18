@@ -6,11 +6,15 @@
             y: 0
         },
         pacmanSpeed = 4,
+        dashSpeed = 12,
+        isDashing = false,
+        canDash = true,
         key = {
             right: false,
             left: false,
             up: false,
-            down: false
+            down: false,
+            shift: false
         },
         pacmanWidth = pacman.offsetWidth,
         pacmanHeight = pacman.offsetHeight;
@@ -29,6 +33,14 @@
 
 
     function movePacman() {
+        if (key.shift === true && canDash) {
+            dash();
+        }
+        if (isDashing == true) {
+            pacmanSpeed = dashSpeed;
+        } else if (isDashing == false) {
+            pacmanSpeed = 4;
+        }
         if (key.right === true) {
             pacmanPos.x += pacmanSpeed;
         } else if (key.left === true) {
@@ -66,6 +78,9 @@
         } else if (e.keyCode === 40) {
             key.down = true;
         }
+        if (e.keyCode === 16) {
+            key.shift = true;
+        }
     }
 
     function keyUp(e) {
@@ -79,8 +94,33 @@
         } else if (e.keyCode === 40) {
             key.down = false;
         }
+        if (e.keyCode === 16) {
+            key.shift = false;
+        }
     }
 
+    function dash() {
+        isDashing = true;
+        setTimeout(function dash() {
+            isDashing = false;
+            canDash = false;
+        }, 300);
+        dashCooldown();
+    }
+
+    function dashCooldown() {
+        setTimeout(function dashCooldown() {
+            canDash = true;
+        }, 1500);
+    }
+
+    function resetSpeed() {
+        pacmanSpeed = 4;
+    }
+
+    function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
 
     document.addEventListener('keydown', keyDown, false);
     document.addEventListener('keyup', keyUp, false);
