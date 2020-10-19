@@ -35,8 +35,9 @@
     playArea.bottomBoundary = (playArea.offsetTop + playArea.offsetHeight - 10) - pacman.offsetHeight;
 
 
-
-    function movePacman() {
+    // Function will move the pacman, is constantly called from the loop at the bottom of script
+    function MovePacman() {
+        // Statements that are for handling the dash mechanic, boosting the player's speed temporarily.
         if (key.shift === true && canDash) {
             dash();
         }
@@ -45,6 +46,7 @@
         } else if (isDashing == false) {
             pacmanSpeed = 4;
         }
+        // Amends the pacman's position with the direction and current pacman's speed
         if (key.right === true) {
             pacmanPos.x += pacmanSpeed;
         } else if (key.left === true) {
@@ -67,32 +69,30 @@
         if (pacmanPos.y > playArea.bottomBoundary) {
             pacmanPos.y = playArea.bottomBoundary;
         }
+        // Changes the object's CSS position
         pacman.style.left = pacmanPos.x + 'px';
         pacman.style.top = pacmanPos.y + 'px';
     }
 
 
-
-    // Each if statement will rotate the CSS .pacman class accordingly, seems a bit clunky, will need changed
-    function keyDown(e) {
+    // Functions for event handling of keys pressed, for arrow keys and shift
+    // key.right, key.down etc makes it so that the object can only move in one direction.
+    // Each if statement will rotate the CSS .pacman class accordingly via changing the rotate value
+    function KeyDown(e) {
         if (e.keyCode === 39) {
             key.right = true;
             key.down = false;
             key.up = false;
             key.left = false;
 
-            for(i=0; i < rotatePac.length; i++){
-                rotatePac[i].style.transform = "rotate(0turn)";
-            }
+            pacman.style.transform = "rotate(0turn)";
         } else if (e.keyCode === 37) {
             key.left = true;
             key.down = false;
             key.up = false;
             key.right = false;
 
-            for(i=0; i < rotatePac.length; i++){
-                rotatePac[i].style.transform = "rotate(0.5turn)";
-            }
+            pacman.style.transform = "rotate(0.5turn)";
         }
         if (e.keyCode === 38) {
             key.up = true;
@@ -100,25 +100,22 @@
             key.right = false;
             key.down = false;
 
-            for(i=0; i < rotatePac.length; i++){
-                rotatePac[i].style.transform = "rotate(0.75turn)";
-            }
+            pacman.style.transform = "rotate(0.75turn)";
         } else if (e.keyCode === 40) {
             key.down = true;
             key.left = false;
             key.right = false;
             key.up = false;
 
-            for(i=0; i < rotatePac.length; i++){
-                rotatePac[i].style.transform = "rotate(0.25turn)";
-            }
+            pacman.style.transform = "rotate(0.25turn)";
         }
         if (e.keyCode === 16) {
             key.shift = true;
         }
     }
 
-    function keyUp(e) {
+    // keyUp makes it so when the user releases key, it'll stop moving the object
+    function KeyUp(e) {
         if (e.keyCode === 39) {
             key.right = false;
         } else if (e.keyCode === 37) {
@@ -134,7 +131,8 @@
         }
     }
 
-    function dash() {
+    // Function for the dash mechanic
+    function Dash() {
         isDashing = true;
         setTimeout(function dash() {
             isDashing = false;
@@ -142,29 +140,30 @@
         }, 300);
         dashCooldown();
     }
-
-    function dashCooldown() {
+    // Function for timing the cooldown of dash
+    function DashCooldown() {
         setTimeout(function dashCooldown() {
             canDash = true;
         }, 1500);
     }
 
-    function resetSpeed() {
+    // Don't think this function does anything currently
+    function ResetSpeed() {
         pacmanSpeed = 4;
     }
 
-    function sleep(ms) {
+    function Sleep(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
 
-    document.addEventListener('keydown', keyDown, false);
-    document.addEventListener('keyup', keyUp, false);
+    document.addEventListener('keydown', KeyDown, false);
+    document.addEventListener('keyup', KeyUp, false);
 
-    function loop() {
-        movePacman();
-        setTimeout(loop, 1000 / 60);
+    function Loop() {
+        MovePacman();
+        setTimeout(Loop, 1000 / 60);
     }
 
-    loop();
+    Loop();
 
 })()
