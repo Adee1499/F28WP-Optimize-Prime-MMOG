@@ -39,7 +39,7 @@
     function MovePacman() {
         // Statements that are for handling the dash mechanic, boosting the player's speed temporarily.
         if (key.shift === true && canDash) {
-            dash();
+            Dash();
         }
         if (isDashing == true) {
             pacmanSpeed = dashSpeed;
@@ -138,11 +138,11 @@
             isDashing = false;
             canDash = false;
         }, 300);
-        dashCooldown();
+        DashCooldown();
     }
     // Function for timing the cooldown of dash
     function DashCooldown() {
-        setTimeout(function dashCooldown() {
+        setTimeout(function DashCooldown() {
             canDash = true;
         }, 1500);
     }
