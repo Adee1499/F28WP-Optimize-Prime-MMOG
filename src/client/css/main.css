@@ -3,7 +3,7 @@ body {
     padding: 0;
     background: #888;
 }
-
+/*
 .playArea {
     width: 1800px;
     height: 850px;
@@ -11,7 +11,7 @@ body {
     border: 10px solid #333;
     margin: 30px auto 0;
     box-shadow: 5px 5px 10px #444;
-}
+}*/
 
 .pacman {
     width: 32px;

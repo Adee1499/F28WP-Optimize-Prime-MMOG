@@ -15,9 +15,9 @@
             up: false,
             down: false,
             shift: false
-        },
-        pacmanWidth = pacman.offsetWidth,
-        pacmanHeight = pacman.offsetHeight;
+        };
+        //pacmanWidth = pacman.offsetWidth,
+        //pacmanHeight = pacman.offsetHeight;
 
     document.body.appendChild(playArea);
     playArea.classList.add('grid');
@@ -32,13 +32,17 @@
     playArea.rightBoundary = (playArea.offsetLeft + playArea.offsetWidth - 10) - pacman.offsetWidth;
     playArea.topBoundary = playArea.offsetTop + 10;
     playArea.bottomBoundary = (playArea.offsetTop + playArea.offsetHeight - 10) - pacman.offsetHeight;
-/*
-    function CollisionDetect(){
-        if(pacmanPos.x.css(''))
 
-    }*/
+    // this function doesn't do anything 😀
+    function CollisionDetect(){
+        if(pacmanPos.x+10 == document.getElementById('wall') ){
+            alert("crap");
+        }
+
+    }
     // Function will move the pacman, is constantly called from the loop at the bottom of script
     function MovePacman() {
+        CollisionDetect() // doesn't do anything
         // Statements that are for handling the dash mechanic, boosting the player's speed temporarily.
         if (key.shift === true && canDash) {
             Dash();
@@ -153,14 +157,15 @@
         }, 1500);
     }
 
+    /*
     // Don't think this function does anything currently
     function ResetSpeed() {
         pacmanSpeed = 4;
-    }
-
+    }*/
+    /*
     function Sleep(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));
-    }
+    }*/
 
     document.addEventListener('keydown', KeyDown, false);
     document.addEventListener('keyup', KeyUp, false);
