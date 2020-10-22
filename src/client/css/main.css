@@ -14,10 +14,34 @@ body {
 }
 
 .pacman {
-    width: 64px;
-    height: 64px;
+    width: 32px;
+    height: 32px;
     background-image: url("../assets/Pacman_transparent.gif");
-    background-size: 64px 64px;
+    background-size: 32px 32px;
     position: absolute;
     transform: rotate(0.5turn);
+}
+
+
+.grid{
+    display: flex;
+    flex-wrap: wrap;
+    width: 896px;
+    height: 640px;
+    border: 10px solid #333;
+    box-shadow: 5px 5px 10px #444;
+    margin: 30px auto 0;
+}
+
+.grid div {
+    width: 32px;
+    height: 32px;
+}
+
+.wall{
+    background-color: darkslateblue;
+}
+
+.empty{
+    background-color: white;
 }

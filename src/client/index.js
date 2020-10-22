@@ -20,12 +20,11 @@
         pacmanHeight = pacman.offsetHeight;
 
     document.body.appendChild(playArea);
-    playArea.classList.add('playArea');
+    playArea.classList.add('grid');
     document.body.appendChild(pacman);
     pacman.classList.add('pacman');
 
-    // This variable is used in the rotation of the pacman class in CSS
-    var rotatePac = document.getElementsByClassName('pacman');
+
 
     pacmanPos.x = (playArea.offsetWidth / 2 + playArea.offsetLeft) - (pacman.offsetWidth / 2);
     pacmanPos.y = (playArea.offsetHeight + playArea.offsetTop) - (pacman.offsetHeight * 2);
@@ -33,17 +32,20 @@
     playArea.rightBoundary = (playArea.offsetLeft + playArea.offsetWidth - 10) - pacman.offsetWidth;
     playArea.topBoundary = playArea.offsetTop + 10;
     playArea.bottomBoundary = (playArea.offsetTop + playArea.offsetHeight - 10) - pacman.offsetHeight;
+/*
+    function CollisionDetect(){
+        if(pacmanPos.x.css(''))
 
-
+    }*/
     // Function will move the pacman, is constantly called from the loop at the bottom of script
     function MovePacman() {
         // Statements that are for handling the dash mechanic, boosting the player's speed temporarily.
         if (key.shift === true && canDash) {
             Dash();
         }
-        if (isDashing == true) {
+        if (isDashing === true) {
             pacmanSpeed = dashSpeed;
-        } else if (isDashing == false) {
+        } else if (isDashing === false) {
             pacmanSpeed = 4;
         }
         // Amends the pacman's position with the direction and current pacman's speed
@@ -73,7 +75,6 @@
         pacman.style.left = pacmanPos.x + 'px';
         pacman.style.top = pacmanPos.y + 'px';
     }
-
 
     // Functions for event handling of keys pressed, for arrow keys and shift
     // key.right, key.down etc makes it so that the object can only move in one direction.
@@ -111,6 +112,11 @@
         }
         if (e.keyCode === 16) {
             key.shift = true;
+        }
+
+        for (var ii=0; ii<walls.length; ii++)
+        {
+            walls[ii].checkIntersection(player.id, player, player.dims);
         }
     }
 
