@@ -1,6 +1,7 @@
 (function () {
     var playArea = document.createElement('div'),
         pacman = document.createElement('div'),
+        username = document.getElementById("username"),
         pacmanPos = {
             x: 0,
             y: 0
@@ -18,6 +19,7 @@
         };
         //pacmanWidth = pacman.offsetWidth,
         //pacmanHeight = pacman.offsetHeight;
+
 
     document.body.appendChild(playArea);
     playArea.classList.add('grid');
@@ -38,8 +40,8 @@
         if(pacmanPos.x+10 == document.getElementById('wall') ){
             alert("crap");
         }
-
     }
+  
     // Function will move the pacman, is constantly called from the loop at the bottom of script
     function MovePacman() {
         CollisionDetect() // doesn't do anything
@@ -79,6 +81,7 @@
         pacman.style.left = pacmanPos.x + 'px';
         pacman.style.top = pacmanPos.y + 'px';
     }
+
 
     // Functions for event handling of keys pressed, for arrow keys and shift
     // key.right, key.down etc makes it so that the object can only move in one direction.
@@ -124,6 +127,7 @@
         }
     }
 
+
     // keyUp makes it so when the user releases key, it'll stop moving the object
     function KeyUp(e) {
         if (e.keyCode === 39) {
@@ -141,6 +145,7 @@
         }
     }
 
+
     // Function for the dash mechanic
     function Dash() {
         isDashing = true;
@@ -150,6 +155,7 @@
         }, 300);
         DashCooldown();
     }
+
     // Function for timing the cooldown of dash
     function DashCooldown() {
         setTimeout(function DashCooldown() {
@@ -157,15 +163,6 @@
         }, 1500);
     }
 
-    /*
-    // Don't think this function does anything currently
-    function ResetSpeed() {
-        pacmanSpeed = 4;
-    }*/
-    /*
-    function Sleep(ms) {
-        return new Promise(resolve => setTimeout(resolve, ms));
-    }*/
 
     document.addEventListener('keydown', KeyDown, false);
     document.addEventListener('keyup', KeyUp, false);

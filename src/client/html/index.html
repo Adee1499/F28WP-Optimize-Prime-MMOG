@@ -1,14 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>PACMAN</title>
-    <link rel="stylesheet" type="text/css" href="../css/main.css">
-    <script src = "../grid.js" charset="utf-8"></script>
-</head>
-<body>
-<script type="text/javascript" src="../index.js"></script>
+    <head>
+        <meta charset="UTF-8">
+        <title>PACMAN.IO</title>
+        <link rel="stylesheet" type="text/css" href="../css/main.css">
+        <style>
+            body {
+                background-color: black;
+                padding-top: 10%;
+            }
+            img {width: 750px}
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div id="logocontainer">
+                <img src="../../../public/assets/logo.png" alt="logo" class="center">
+            </div>
+            <form action="game.html">
+                <div id="usernamecontainer">
+                    <input id="username" type="text" name="username" placeholder="Username"/>
+                </div>
+                <input id="play" type="submit" value="START">
+            </form>
+        </div>
 
 
-</body>
+    </body>
 </html>
