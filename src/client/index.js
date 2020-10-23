@@ -1,6 +1,7 @@
 (function () {
     var playArea = document.createElement('div'),
         pacman = document.createElement('div'),
+        username = document.getElementById("username"),
         pacmanPos = {
             x: 0,
             y: 0
@@ -19,6 +20,7 @@
         pacmanWidth = pacman.offsetWidth,
         pacmanHeight = pacman.offsetHeight;
 
+
     document.body.appendChild(playArea);
     playArea.classList.add('playArea');
     document.body.appendChild(pacman);
@@ -34,7 +36,7 @@
 
     function movePacman() {
         if (key.shift === true && canDash) {
-            dash();
+            Dash();
         }
         if (isDashing == true) {
             pacmanSpeed = dashSpeed;
@@ -105,15 +107,22 @@
             isDashing = false;
             canDash = false;
         }, 300);
-        dashCooldown();
+        DashCooldown();
     }
+<<<<<<< Updated upstream
 
     function dashCooldown() {
         setTimeout(function dashCooldown() {
+=======
+    // Function for timing the cooldown of dash
+    function DashCooldown() {
+        setTimeout(function DashCooldown() {
+>>>>>>> Stashed changes
             canDash = true;
         }, 1500);
     }
 
+<<<<<<< Updated upstream
     function resetSpeed() {
         pacmanSpeed = 4;
     }
@@ -124,6 +133,10 @@
 
     document.addEventListener('keydown', keyDown, false);
     document.addEventListener('keyup', keyUp, false);
+=======
+    document.addEventListener('keydown', KeyDown, false);
+    document.addEventListener('keyup', KeyUp, false);
+>>>>>>> Stashed changes
 
     function loop() {
         movePacman();
