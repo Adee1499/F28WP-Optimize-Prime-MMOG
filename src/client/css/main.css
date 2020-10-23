@@ -79,7 +79,7 @@ input[type=text] {
     margin-top: 10px;
     width: 130px;
 }
-
+/*
 .playArea {
     width: 1800px;
     height: 850px;
@@ -87,7 +87,7 @@ input[type=text] {
     border: 10px solid #333;
     margin: 30px auto 0;
     box-shadow: 5px 5px 10px #444;
-}
+}*/
 
 .pacman {
     width: 64px;
@@ -95,4 +95,29 @@ input[type=text] {
     background-image: url("../../../public/assets/pacmanTransparent.gif");
     background-size: 64px 64px;
     position: absolute;
+    transform: rotate(0.5turn);
+}
+
+
+.grid{
+    display: flex;
+    flex-wrap: wrap;
+    width: 896px;
+    height: 640px;
+    border: 10px solid #333;
+    box-shadow: 5px 5px 10px #444;
+    margin: 30px auto 0;
+}
+
+.grid div {
+    width: 32px;
+    height: 32px;
+}
+
+.wall{
+    background-color: darkslateblue;
+}
+
+.empty{
+    background-color: white;
 }

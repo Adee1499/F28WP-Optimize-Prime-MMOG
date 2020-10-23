@@ -16,15 +16,18 @@
             up: false,
             down: false,
             shift: false
-        },
-        pacmanWidth = pacman.offsetWidth,
-        pacmanHeight = pacman.offsetHeight;
+        };
+        //pacmanWidth = pacman.offsetWidth,
+        //pacmanHeight = pacman.offsetHeight;
 
 
     document.body.appendChild(playArea);
-    playArea.classList.add('playArea');
+    playArea.classList.add('grid');
     document.body.appendChild(pacman);
     pacman.classList.add('pacman');
+
+
+
     pacmanPos.x = (playArea.offsetWidth / 2 + playArea.offsetLeft) - (pacman.offsetWidth / 2);
     pacmanPos.y = (playArea.offsetHeight + playArea.offsetTop) - (pacman.offsetHeight * 2);
     playArea.leftBoundary = playArea.offsetLeft + 10;
@@ -32,17 +35,26 @@
     playArea.topBoundary = playArea.offsetTop + 10;
     playArea.bottomBoundary = (playArea.offsetTop + playArea.offsetHeight - 10) - pacman.offsetHeight;
 
-
-
+    // this function doesn't do anything 😀
+    function CollisionDetect(){
+        if(pacmanPos.x+10 == document.getElementById('wall') ){
+            alert("crap");
+        }
+    }
+  
+    // Function will move the pacman, is constantly called from the loop at the bottom of script
     function MovePacman() {
+        CollisionDetect() // doesn't do anything
+        // Statements that are for handling the dash mechanic, boosting the player's speed temporarily.
         if (key.shift === true && canDash) {
             Dash();
         }
-        if (isDashing == true) {
+        if (isDashing === true) {
             pacmanSpeed = dashSpeed;
-        } else if (isDashing == false) {
+        } else if (isDashing === false) {
             pacmanSpeed = 4;
         }
+        // Amends the pacman's position with the direction and current pacman's speed
         if (key.right === true) {
             pacmanPos.x += pacmanSpeed;
         } else if (key.left === true) {
@@ -65,26 +77,58 @@
         if (pacmanPos.y > playArea.bottomBoundary) {
             pacmanPos.y = playArea.bottomBoundary;
         }
+        // Changes the object's CSS position
         pacman.style.left = pacmanPos.x + 'px';
         pacman.style.top = pacmanPos.y + 'px';
     }
 
+
+    // Functions for event handling of keys pressed, for arrow keys and shift
+    // key.right, key.down etc makes it so that the object can only move in one direction.
+    // Each if statement will rotate the CSS .pacman class accordingly via changing the rotate value
     function KeyDown(e) {
         if (e.keyCode === 39) {
             key.right = true;
+            key.down = false;
+            key.up = false;
+            key.left = false;
+
+            pacman.style.transform = "rotate(0turn)";
         } else if (e.keyCode === 37) {
             key.left = true;
+            key.down = false;
+            key.up = false;
+            key.right = false;
+
+            pacman.style.transform = "rotate(0.5turn)";
         }
         if (e.keyCode === 38) {
             key.up = true;
+            key.left = false;
+            key.right = false;
+            key.down = false;
+
+            pacman.style.transform = "rotate(0.75turn)";
         } else if (e.keyCode === 40) {
             key.down = true;
+            key.left = false;
+            key.right = false;
+            key.up = false;
+
+            pacman.style.transform = "rotate(0.25turn)";
         }
         if (e.keyCode === 16) {
             key.shift = true;
         }
+
+        for (var ii=0; ii<walls.length; ii++)
+        {
+            walls[ii].checkIntersection(player.id, player, player.dims);
+        }
     }
 
+
+    // keyUp makes it so when the user releases key, it'll stop moving the object
     function KeyUp(e) {
         if (e.keyCode === 39) {
             key.right = false;
@@ -101,6 +145,8 @@
         }
     }
 
+
+    // Function for the dash mechanic
     function Dash() {
         isDashing = true;
         setTimeout(function dash() {
@@ -116,7 +162,6 @@
             canDash = true;
         }, 1500);
     }
-
 
 
     document.addEventListener('keydown', KeyDown, false);
