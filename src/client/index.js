@@ -34,7 +34,7 @@
 
 
 
-    function movePacman() {
+    function MovePacman() {
         if (key.shift === true && canDash) {
             Dash();
         }
@@ -69,7 +69,7 @@
         pacman.style.top = pacmanPos.y + 'px';
     }
 
-    function keyDown(e) {
+    function KeyDown(e) {
         if (e.keyCode === 39) {
             key.right = true;
         } else if (e.keyCode === 37) {
@@ -85,7 +85,7 @@
         }
     }
 
-    function keyUp(e) {
+    function KeyUp(e) {
         if (e.keyCode === 39) {
             key.right = false;
         } else if (e.keyCode === 37) {
@@ -101,7 +101,7 @@
         }
     }
 
-    function dash() {
+    function Dash() {
         isDashing = true;
         setTimeout(function dash() {
             isDashing = false;
@@ -109,40 +109,24 @@
         }, 300);
         DashCooldown();
     }
-<<<<<<< Updated upstream
 
-    function dashCooldown() {
-        setTimeout(function dashCooldown() {
-=======
     // Function for timing the cooldown of dash
     function DashCooldown() {
         setTimeout(function DashCooldown() {
->>>>>>> Stashed changes
             canDash = true;
         }, 1500);
     }
 
-<<<<<<< Updated upstream
-    function resetSpeed() {
-        pacmanSpeed = 4;
-    }
 
-    function sleep(ms) {
-        return new Promise(resolve => setTimeout(resolve, ms));
-    }
 
-    document.addEventListener('keydown', keyDown, false);
-    document.addEventListener('keyup', keyUp, false);
-=======
     document.addEventListener('keydown', KeyDown, false);
     document.addEventListener('keyup', KeyUp, false);
->>>>>>> Stashed changes
 
-    function loop() {
-        movePacman();
-        setTimeout(loop, 1000 / 60);
+    function Loop() {
+        MovePacman();
+        setTimeout(Loop, 1000 / 60);
     }
 
-    loop();
+    Loop();
 
 })()
