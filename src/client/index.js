@@ -10,6 +10,8 @@
         dashSpeed = 12,
         isDashing = false,
         canDash = true,
+		dirArray = ["", "", "", ""], //directions array, for multiple keys held down
+		addDir = "",                 //direction to add to dirArray
         key = {
             right: false,
             left: false,
@@ -92,6 +94,8 @@
             key.down = false;
             key.up = false;
             key.left = false;
+			addDir = "right";
+			addArray(dirArray, addDir);
 
             pacman.style.transform = "rotate(0turn)";
         } else if (e.keyCode === 37) {
@@ -99,6 +103,8 @@
             key.down = false;
             key.up = false;
             key.right = false;
+			addDir = "left";
+			addArray(dirArray, addDir);
 
             pacman.style.transform = "rotate(0.5turn)";
         }
@@ -107,6 +113,8 @@
             key.left = false;
             key.right = false;
             key.down = false;
+			addDir = "up";
+			addArray(dirArray, addDir);
 
             pacman.style.transform = "rotate(0.75turn)";
         } else if (e.keyCode === 40) {
@@ -114,6 +122,8 @@
             key.left = false;
             key.right = false;
             key.up = false;
+			addDir = "down";
+			addArray(dirArray, addDir);
 
             pacman.style.transform = "rotate(0.25turn)";
         }
@@ -166,6 +176,67 @@
 
     document.addEventListener('keydown', KeyDown, false);
     document.addEventListener('keyup', KeyUp, false);
+	
+	//add new key direction held down to the array
+	function addArray(dirArray, addDir){
+		for(i = 0; i < dirArray.length; i++){
+			if(dirArray[i] == ""){
+				dirArray[i] = addDir;
+			}
+		}
+	}
+	
+	//changes pac movement direction back to previous key's
+	function revertDir(dirArray, arrayIndex){
+		if (dirArray[arrayIndex] == "right"){
+			key.right = true;
+            key.down = false;
+            key.up = false;
+            key.left = false;
+			MovePacman();
+		}
+		else if (dirArray[arrayIndex] == "left"){
+			key.right = false;
+            key.down = false;
+            key.up = false;
+            key.left = true;
+			MovePacman();
+		}
+		else if (dirArray[arrayIndex] == "up"){
+			key.right = false;
+            key.down = false;
+            key.up = true;
+            key.left = false;
+			MovePacman();
+		}
+		else if (dirArray[arrayIndex] == "down"){
+			key.right = false;
+            key.down = true;
+            key.up = false;
+            key.left = false;
+			MovePacman();
+		}
+	}
+	
+	//reverts last array value to previous key held down
+	function removeArray(dirArray){
+		var arrayIndex = 0;
+		if(dirArray[0] !== ""){
+			dirArray[0] = "";
+		}
+		else if(dirArray[1] !== ""){
+			dirArray[1] = "";
+			revertDir(dirArray, arrayIndex);
+		}
+		else if(dirArray[2] !== ""){
+			dirArray[2] = "";
+			revertDir(dirArray, arrayIndex);
+		}
+		else if(dirArray[3] !== ""){
+			dirArray[3] = "";
+			revertDir(dirArray, arrayIndex);
+		}
+	}
 
     function Loop() {
         MovePacman();
