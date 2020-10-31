@@ -28,15 +28,58 @@
     document.body.appendChild(pacman);
     pacman.classList.add('pacman');
 
-
-
     pacmanPos.x = (playArea.offsetWidth / 2 + playArea.offsetLeft) - (pacman.offsetWidth / 2);
     pacmanPos.y = (playArea.offsetHeight + playArea.offsetTop) - (pacman.offsetHeight * 2);
     playArea.leftBoundary = playArea.offsetLeft + 10;
     playArea.rightBoundary = (playArea.offsetLeft + playArea.offsetWidth - 10) - pacman.offsetWidth;
     playArea.topBoundary = playArea.offsetTop + 10;
     playArea.bottomBoundary = (playArea.offsetTop + playArea.offsetHeight - 10) - pacman.offsetHeight;
+    
+    /*
+    For some reason was sometimes having trouble accessing this from grid.js, despite loading it prior to index.js, 
+    so have copied it here temporarily
+    */
+    // a constant variable layout that holds the layout of the grid which is 28x20
+    // 1 = a wall, 0 = an empty cell
+    let gridLayout = [
+        1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 1, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 1, 0,
+        1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 1, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        1, 0, 0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 1, 0,
+        1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 1, 0,
+        0, 0, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 1, 0,
+        1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 1, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 1, 0,
+        1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 1, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 1, 0,
+        1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 1, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 1, 0,
+        1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 0, 0, 1, 0,
+        0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0,
 
+    ]
+
+    //score variable (make part of pacman player class)
+    let score = 0;
+
+    //array containing indexes of empty cells in layout (grid.js)
+    let emptyCells = [];
+    for (var i = 0; i < gridLayout.length; i++) {
+        if (gridLayout[i] == 0) 
+           emptyCells.push(i);
+    }
+
+    //food variables, for food spawning
+    const maxFood = Math.floor(emptyCells.length / 4);
+    let currentFood = 0;
+    
+    
     // this function doesn't do anything 😀
     function CollisionDetect(){
         if(pacmanPos.x+10 == document.getElementById('wall') ){
@@ -174,6 +217,60 @@
     }
 
 
+    // Updates the score
+    function UpdateScore() {
+        //score++;
+        document.getElementById("score").innerHTML = score;
+    }
+
+    //spawn a food in random empty location
+    function SpawnFood() {
+        //find and choose empty position
+        var index = emptyCells.splice(Math.floor(Math.random() * emptyCells.length), 1);
+        var coord = IndexToCoord(index);
+        
+        //apply food offsets (food size 8x8)
+        coord[0] += 12; // += cellWidth / 2 - foodWidth / 2
+        coord[1] += 12;
+
+        //update layout
+        // not implemented, unsure if wanted
+
+        //create and position food
+        var food = document.createElement('div');
+        food.id = 'food' + currentFood;
+        food.className = 'food';
+        food.style.position = 'absolute';
+        food.style.top = coord[1] + 'px';
+        food.style.left = coord[0] + 'px';
+
+        playArea.appendChild(food);
+        
+        currentFood++;
+    }
+
+    //convert layout index to x y co-ord in pixels
+    function IndexToCoord(index) {  
+        //convert index to xy
+        //28x20: cell dimensions of grid
+        var y = Math.floor(index/28);
+        var x = index % 28;
+        //scale to pixels
+        //32: size of cell (square)
+        y *= 32;
+        x *= 32; 
+        return [x, y]
+    }
+
+    //spawning algorithm for food. Currently fills 1/4 of empty cells with food.
+    function UpdateFood() {
+        while (currentFood < maxFood) {
+            SpawnFood();
+        }
+    }
+    
+
+
     document.addEventListener('keydown', KeyDown, false);
     document.addEventListener('keyup', KeyUp, false);
 	
@@ -238,8 +335,12 @@
 		}
 	}
 
+
+    //functions to be looped over, performed every frame
     function Loop() {
         MovePacman();
+        UpdateScore();
+        UpdateFood();
         setTimeout(Loop, 1000 / 60);
     }
 
