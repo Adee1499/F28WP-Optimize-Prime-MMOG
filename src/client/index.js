@@ -10,8 +10,8 @@
         dashSpeed = 12,
         isDashing = false,
         canDash = true,
-		dirArray = ["", "", "", ""], //directions array, for multiple keys held down
-		addDir = "",                 //direction to add to dirArray
+
+		dirArray = [], //directions array, for multiple keys held down
         key = {
             right: false,
             left: false,
@@ -86,7 +86,7 @@
             alert("crap");
         }
     }
-  
+ 
     // Function will move the pacman, is constantly called from the loop at the bottom of script
     function MovePacman() {
         CollisionDetect() // doesn't do anything
@@ -99,17 +99,32 @@
         } else if (isDashing === false) {
             pacmanSpeed = 4;
         }
-        // Amends the pacman's position with the direction and current pacman's speed
-        if (key.right === true) {
-            pacmanPos.x += pacmanSpeed;
-        } else if (key.left === true) {
-            pacmanPos.x -= pacmanSpeed;
+
+        // Get movement direction from dirArray, rotating the pacman as specified and sets up movement
+        // Do nothing if array is empty
+        if (dirArray.length > 0) {
+            // Test last element in dirArray (most recent). Apply transformations accordingly.
+            switch (dirArray[dirArray.length - 1]) {
+                case "left": 
+                    pacmanPos.x -= pacmanSpeed;
+                    pacman.style.transform = "rotate(0.5turn)";
+                    break;
+                case "right":
+                    pacmanPos.x += pacmanSpeed;
+                    pacman.style.transform = "rotate(0turn)";
+                    break;
+                case "up":
+                    pacmanPos.y -= pacmanSpeed;
+                    pacman.style.transform = "rotate(0.75turn)";
+                    break;
+                case "down":
+                    pacmanPos.y += pacmanSpeed;
+                    pacman.style.transform = "rotate(0.25turn)";
+                    break;
+            }    
         }
-        if (key.up === true) {
-            pacmanPos.y -= pacmanSpeed;
-        } else if (key.down === true) {
-            pacmanPos.y += pacmanSpeed;
-        }
+
+        // Collision detection with boundary
         if (pacmanPos.x < playArea.leftBoundary) {
             pacmanPos.x = playArea.leftBoundary;
         }
@@ -122,54 +137,28 @@
         if (pacmanPos.y > playArea.bottomBoundary) {
             pacmanPos.y = playArea.bottomBoundary;
         }
-        // Changes the object's CSS position
+
+        // Changes the object's CSS position to move the pacman
         pacman.style.left = pacmanPos.x + 'px';
         pacman.style.top = pacmanPos.y + 'px';
     }
 
-
-    // Functions for event handling of keys pressed, for arrow keys and shift
-    // key.right, key.down etc makes it so that the object can only move in one direction.
-    // Each if statement will rotate the CSS .pacman class accordingly via changing the rotate value
+    // Register when a key is pressed down
     function KeyDown(e) {
-        if (e.keyCode === 39) {
-            key.right = true;
-            key.down = false;
-            key.up = false;
-            key.left = false;
-			addDir = "right";
-			addArray(dirArray, addDir);
-
-            pacman.style.transform = "rotate(0turn)";
-        } else if (e.keyCode === 37) {
-            key.left = true;
-            key.down = false;
-            key.up = false;
-            key.right = false;
-			addDir = "left";
-			addArray(dirArray, addDir);
-
-            pacman.style.transform = "rotate(0.5turn)";
+        //note: dirArray is checked to restrict multiple instances.
+        if (e.keyCode === 39 && dirArray.indexOf("right") == -1) {
+            dirArray.push("right");
         }
-        if (e.keyCode === 38) {
-            key.up = true;
-            key.left = false;
-            key.right = false;
-            key.down = false;
-			addDir = "up";
-			addArray(dirArray, addDir);
-
-            pacman.style.transform = "rotate(0.75turn)";
-        } else if (e.keyCode === 40) {
-            key.down = true;
-            key.left = false;
-            key.right = false;
-            key.up = false;
-			addDir = "down";
-			addArray(dirArray, addDir);
-
-            pacman.style.transform = "rotate(0.25turn)";
+        if (e.keyCode === 37 && dirArray.indexOf("left") == -1) {
+            dirArray.push("left");
         }
+        if (e.keyCode === 38 && dirArray.indexOf("up") == -1) {
+            dirArray.push("up");
+        } 
+        if (e.keyCode === 40 && dirArray.indexOf("down") == -1) {
+            dirArray.push("down");
+        }
+
         if (e.keyCode === 16) {
             key.shift = true;
         }
@@ -180,24 +169,25 @@
         }
     }
 
-
-    // keyUp makes it so when the user releases key, it'll stop moving the object
+    // Register when a key is released
     function KeyUp(e) {
         if (e.keyCode === 39) {
-            key.right = false;
-        } else if (e.keyCode === 37) {
-            key.left = false;
+            dirArray.splice(dirArray.indexOf("right"), 1);
+        }
+        if (e.keyCode === 37) {
+            dirArray.splice(dirArray.indexOf("left"), 1)
         }
         if (e.keyCode === 38) {
-            key.up = false;
-        } else if (e.keyCode === 40) {
-            key.down = false;
+            dirArray.splice(dirArray.indexOf("up"), 1)
+        } 
+        if (e.keyCode === 40) {
+            dirArray.splice(dirArray.indexOf("down"), 1)
         }
+        
         if (e.keyCode === 16) {
             key.shift = false;
         }
     }
-
 
     // Function for the dash mechanic
     function Dash() {
@@ -223,20 +213,20 @@
         document.getElementById("score").innerHTML = score;
     }
 
-    //spawn a food in random empty location
+    // Spawn a food in random empty location
     function SpawnFood() {
-        //find and choose empty position
+        // Find and choose empty position
         var index = emptyCells.splice(Math.floor(Math.random() * emptyCells.length), 1);
         var coord = IndexToCoord(index);
         
-        //apply food offsets (food size 8x8)
+        // Apply food offsets (food size 8x8)
         coord[0] += 12; // += cellWidth / 2 - foodWidth / 2
         coord[1] += 12;
 
-        //update layout
-        // not implemented, unsure if wanted
+        // Update layout
+        // not implemented
 
-        //create and position food
+        // Create and position food
         var food = document.createElement('div');
         food.id = 'food' + currentFood;
         food.className = 'food';
@@ -249,7 +239,13 @@
         currentFood++;
     }
 
-    //convert layout index to x y co-ord in pixels
+    // food collision
+    // not implemented
+    
+    // food remove
+    // not implemented
+
+    // Convert layout index to x y co-ord in pixels
     function IndexToCoord(index) {  
         //convert index to xy
         //28x20: cell dimensions of grid
@@ -262,81 +258,18 @@
         return [x, y]
     }
 
-    //spawning algorithm for food. Currently fills 1/4 of empty cells with food.
+    // Spawning algorithm for food. Currently just fills 1/4 of empty cells with food.
     function UpdateFood() {
         while (currentFood < maxFood) {
             SpawnFood();
         }
     }
-    
-
 
     document.addEventListener('keydown', KeyDown, false);
     document.addEventListener('keyup', KeyUp, false);
-	
-	//add new key direction held down to the array
-	function addArray(dirArray, addDir){
-		for(i = 0; i < dirArray.length; i++){
-			if(dirArray[i] == ""){
-				dirArray[i] = addDir;
-			}
-		}
-	}
-	
-	//changes pac movement direction back to previous key's
-	function revertDir(dirArray, arrayIndex){
-		if (dirArray[arrayIndex] == "right"){
-			key.right = true;
-            key.down = false;
-            key.up = false;
-            key.left = false;
-			MovePacman();
-		}
-		else if (dirArray[arrayIndex] == "left"){
-			key.right = false;
-            key.down = false;
-            key.up = false;
-            key.left = true;
-			MovePacman();
-		}
-		else if (dirArray[arrayIndex] == "up"){
-			key.right = false;
-            key.down = false;
-            key.up = true;
-            key.left = false;
-			MovePacman();
-		}
-		else if (dirArray[arrayIndex] == "down"){
-			key.right = false;
-            key.down = true;
-            key.up = false;
-            key.left = false;
-			MovePacman();
-		}
-	}
-	
-	//reverts last array value to previous key held down
-	function removeArray(dirArray){
-		var arrayIndex = 0;
-		if(dirArray[0] !== ""){
-			dirArray[0] = "";
-		}
-		else if(dirArray[1] !== ""){
-			dirArray[1] = "";
-			revertDir(dirArray, arrayIndex);
-		}
-		else if(dirArray[2] !== ""){
-			dirArray[2] = "";
-			revertDir(dirArray, arrayIndex);
-		}
-		else if(dirArray[3] !== ""){
-			dirArray[3] = "";
-			revertDir(dirArray, arrayIndex);
-		}
-	}
 
 
-    //functions to be looped over, performed every frame
+    // Functions to be looped over, with delay for approx frame rate
     function Loop() {
         MovePacman();
         UpdateScore();
