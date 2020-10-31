@@ -13,10 +13,6 @@
 
 		dirArray = [], //directions array, for multiple keys held down
         key = {
-            right: false,
-            left: false,
-            up: false,
-            down: false,
             shift: false
         };
         //pacmanWidth = pacman.offsetWidth,
@@ -25,15 +21,15 @@
 
     document.body.appendChild(playArea);
     playArea.classList.add('grid');
-    document.body.appendChild(pacman);
+    playArea.appendChild(pacman);
     pacman.classList.add('pacman');
 
-    pacmanPos.x = (playArea.offsetWidth / 2 + playArea.offsetLeft) - (pacman.offsetWidth / 2);
-    pacmanPos.y = (playArea.offsetHeight + playArea.offsetTop) - (pacman.offsetHeight * 2);
-    playArea.leftBoundary = playArea.offsetLeft + 10;
-    playArea.rightBoundary = (playArea.offsetLeft + playArea.offsetWidth - 10) - pacman.offsetWidth;
-    playArea.topBoundary = playArea.offsetTop + 10;
-    playArea.bottomBoundary = (playArea.offsetTop + playArea.offsetHeight - 10) - pacman.offsetHeight;
+    pacmanPos.x = (playArea.offsetWidth / 2) - (pacman.offsetWidth / 2);
+    pacmanPos.y = (playArea.offsetHeight) - (pacman.offsetHeight * 2);
+    playArea.leftBoundary = 0;
+    playArea.rightBoundary = (playArea.offsetWidth - 20) - pacman.offsetWidth;
+    playArea.topBoundary = 0;
+    playArea.bottomBoundary = (playArea.offsetHeight - 20) - pacman.offsetHeight;
     
     /*
     For some reason was sometimes having trouble accessing this from grid.js, despite loading it prior to index.js, 
@@ -143,6 +139,8 @@
         pacman.style.top = pacmanPos.y + 'px';
     }
 
+
+    // Functions for event handling of keys pressed 
     // Register when a key is pressed down
     function KeyDown(e) {
         //note: dirArray is checked to restrict multiple instances.
