@@ -1,5 +1,7 @@
 # F28WP-Optimize-Prime-MMOG
 
+Inside the root directory run ```npm install``` Then ```npm start``` to start the server.
+The server will run on port 1234 by default. So navigate to https://localhost:1234/index.html
 
 
 ### Code conventions:
