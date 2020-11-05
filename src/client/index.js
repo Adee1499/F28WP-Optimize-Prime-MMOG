@@ -74,8 +74,8 @@
     //food variables, for food spawning
     const maxFood = Math.floor(emptyCells.length / 4);
     let currentFood = 0;
-    
-    
+
+
     // this function doesn't do anything 😀
     function CollisionDetect(){
         if(pacmanPos.x+10 == document.getElementById('wall') ){
@@ -85,7 +85,7 @@
  
     // Function will move the pacman, is constantly called from the loop at the bottom of script
     function MovePacman() {
-        CollisionDetect() // doesn't do anything
+        //FoodCollisions();
         // Statements that are for handling the dash mechanic, boosting the player's speed temporarily.
         if (key.shift === true && canDash) {
             Dash();
@@ -161,10 +161,10 @@
             key.shift = true;
         }
 
-        for (var ii=0; ii<walls.length; ii++)
-        {
-            walls[ii].checkIntersection(player.id, player, player.dims);
-        }
+        // for (var ii=0; ii<walls.length; ii++)
+        // {
+        //     walls[ii].checkIntersection(player.id, player, player.dims);
+        // }
     }
 
     // Register when a key is released
@@ -239,6 +239,9 @@
 
     // food collision
     // not implemented
+    function FoodCollisions() {
+
+    }
     
     // food remove
     // not implemented

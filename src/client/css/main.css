@@ -1,3 +1,7 @@
+* {
+    box-sizing: border-box;
+}
+
 body {
     position: relative;
     height: 100%;
@@ -79,25 +83,33 @@ input[type=text] {
     margin-top: 10px;
     width: 130px;
 }
-/*
-.playArea {
-    width: 1800px;
-    height: 850px;
-    background: #000;
-    border: 10px solid #333;
-    margin: 30px auto 0;
-    box-shadow: 5px 5px 10px #444;
-}*/
 
-.pacman {
-    width: 32px;
-    height: 32px;
-    background-image: url("../../../public/assets/pacmanTransparent.gif");
-    background-size: 32px 32px;
-    position: absolute;
-    transform: rotate(0.5turn);
+#wrapper {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
+#game {
+    position: relative;
+    display: inline-grid;
+    background: black;
+}
+
+.square {
+    display: block;
+}
+
+/*.pacman {*/
+/*    width: 32px;*/
+/*    height: 32px;*/
+/*    background-image: url("../../../public/assets/pacmanTransparent.gif");*/
+/*    background-size: 32px 32px;*/
+/*    position: absolute;*/
+/*    transform: rotate(0.5turn);*/
+/*}*/
 
 .grid{
     display: flex;
@@ -112,23 +124,44 @@ input[type=text] {
 
 .wall{
     background-color: darkslateblue;
-    width: 32px;
-    height: 32px;
 }
 
 .empty {
-    background-color: #000000;
-    width: 32px;
-    height: 32px;
+    background: black;
 }
 
 .food{
-  width: 8px;
-  height: 8px;
+  border: 8px solid black;
   border-radius: 50%;
   background-color: #ffffff;
 }
 
-.empty{
-    background-color:black;
+.pacman {
+    background: yellow;
+    border: none;
+    border-radius: 50%;
+    clip-path: polygon(
+            0 0,
+            32px 0,
+            32px -8px,
+            13px 16px,
+            32px 40px,
+            32px 32px,
+            0 32px
+    );
+    animation: chew 0.2s linear forwards infinite;
+}
+
+@keyframes chew {
+    50% {
+        clip-path: polygon(
+                0 0,
+                32px 0,
+                32px 16px,
+                13px 16px,
+                32px 16px,
+                32px 32px,
+                0 32px
+        );
+    }
 }
