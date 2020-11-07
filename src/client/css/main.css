@@ -49,6 +49,11 @@ body {
     padding: 0;
     text-align: center;
 }
+#register{
+    text-align: center;
+    margin-top: 50px;
+    color: white;
+}
 
 ::placeholder {
     color: white;

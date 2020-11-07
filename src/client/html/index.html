@@ -19,11 +19,28 @@
             </div>
             <form action="game.html">
                 <div id="usernamecontainer">
-                    <input id="username" type="text" name="username" placeholder="Username"/>
+                    <input id="username" type="text" name="username" placeholder="Player name"/>
                 </div>
                 <input id="play" type="submit" value="START">
+        </div>
+
+        <div id="register">
+            <h2><u>register/login</u></h2>
+            <p> Register and login for high score stats!</p>
+            <form action="validation.php" method="post">
+                <div class="#usernamecontainer">
+                    <label>Username</label>
+                    <input type="text" name="user" required>
+                </div>
+                <div class="#usernamecontainer">
+                    <label>Password</label>
+                    <input type="password" name="password" required>
+                </div>
+                <button type="submit" class="btn btn-primary"> Register </button>
             </form>
         </div>
+
+
         <h2>Score: <span id='score'></span></h2>
 
     </body>
