@@ -50,11 +50,30 @@ body {
     text-align: center;
 }
 
+#register{
+    text-align: center;
+    margin-top: 50px;
+    color: white;
+}
+
 ::placeholder {
     color: white;
 }
 
 input[type=text] {
+    overflow: hidden;
+    background-color: black;
+    border: 3px white solid;
+    border-radius: 25px;
+    font-size: 16px;
+    font-family: Fjalla One, sans-serif;
+    margin: auto;
+    padding: 0;
+    text-align: center;
+    width: auto;
+    color: white;
+}
+input[type=password] {
     overflow: hidden;
     background-color: black;
     border: 3px white solid;
