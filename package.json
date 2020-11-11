@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "./client/index.js",
   "scripts": {
-    "start": "parcel ./src/client/html/index.html ./src/client/html/game.html"
+    "start": "parcel ./src/client/html/index.html"
   },
   "repository": {
     "type": "git",
