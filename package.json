@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "./client/index.js",
   "scripts": {
-    "start": "parcel ./src/client/html/index.html ./src/client/html/game.html"
+    "start": "node ./src/server/index"
   },
   "repository": {
     "type": "git",
@@ -19,5 +19,10 @@
       "@babel/plugin-transform-runtime"
     ]
   },
-  "dependencies": {}
+  "dependencies": {
+    "express": "^4.17.1",
+    "nodemon": "^2.0.6",
+    "socket.io": "^3.0.1",
+    "socket.io-client": "^3.0.1"
+  }
 }

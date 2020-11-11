@@ -1,50 +1,23 @@
-var http = require("http");
+const Bundler = require('parcel-bundler');
+const app = require('express')();
+const server = require('http').createServer(app);
+const socketIO = require('socket.io');
 
-const mysql = require("mysql");
+let io = socketIO(server);
 
-// Create connection to the database
-// Port 3306
-const connection = mysql.createConnection({
-  // Very secure having the login here!
-  host: "sql2.freesqldatabase.com",       //our database info
-  user: "sql2371952",
-  password: "cF3*rV3*",
-  database: "sql2371952"
+const file = 'src/client/html/game.html';
+const options = {};
+
+const bundler = new Bundler(file, options);
+
+app.use(bundler.middleware());
+
+const port = process.env.PORT || 3000;
+
+server.listen(port, () => {
+    console.log(`Server is up on port ${port}.`);
 });
 
-let out = "";
-
-connection.connect(function (err) {
-  if (err) throw err;
-  console.log("Connected Database!");
-  //create a server object:
-
-  connection.query("drop table calc;", function (err, result) {
-    console.log(result);
-    // fail if table is already created
-    out += "drop table:" + err + "\n";
-  });
-
-  connection.query("create table calc(x int, y int);", function (err, result) {
-    console.log(result);
-    // fail if table is already created
-    out += "create table:" + err + "\n";
-  });
-
-  connection.query("insert into calc values(10, 25);", function (err, result) {
-    console.log(result);
-    out += "insert into calc:" + result + "\n";
-  });
-
-  connection.query("select x,y, (x+y) from calc;", function (err, result) {
-    console.log(result);
-    out += "select x,y: " + result[0].x + "\n";
-
-    http
-      .createServer(function (req, res) {
-        res.write("Hello2:" + out);
-        res.end(); //end the response
-      })
-      .listen(8080);
-  });
+io.on('connection', (socket) => {
+    console.log('User connected: ' + socket.id);
 });

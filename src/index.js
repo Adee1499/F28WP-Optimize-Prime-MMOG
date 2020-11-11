@@ -1,12 +1,22 @@
 import { LAYOUT, OBJECT_TYPE } from "./setup";
 import Arena from './arena';
 import Pacman from "./pacman";
+import io from 'socket.io-client';
 
 // DOM elements
 const gameGrid = document.querySelector('#game');
 const scoreTable = document.querySelector('#score');
 var username = document.getElementById("username").value;
 const usernameContainer = document.querySelector('#username');
+
+// socket.io connection setup
+const socket = io(`ws://${window.location.host}`);
+const connectedPromise = new Promise(resolve => {
+    socket.on('connect', () => {
+        console.log('Connected to server!');
+        resolve();
+    });
+});
 
 
 // Game constants
