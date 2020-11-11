@@ -20,4 +20,7 @@ server.listen(port, () => {
 
 io.on('connection', (socket) => {
     console.log('User connected: ' + socket.id);
+    socket.on('disconnect', () => {
+        console.log('user disconnected');
+    });
 });
