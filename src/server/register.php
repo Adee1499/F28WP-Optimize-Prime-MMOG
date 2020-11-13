@@ -1,5 +1,3 @@
-
-
 <?php
 
 include '../client/html/index.html';
