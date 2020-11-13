@@ -1,6 +1,8 @@
+
+
 <?php
 
-session_start();
+include '../client/html/index.html';
 
 /*
 I've tested this on a website host that comes with an SQL database called 000webhost
@@ -20,23 +22,31 @@ mysqli_select_db($con, 'id15359279_pacman');
 // POST > GET as it doesn't put it in URL
 $name = $_POST['user'];
 $pass = $_POST['password'];
+$score = 0;
 
 // This wilL create a variable of the values of the row if the username is already in it
-$s = " select * from usertable where name ='$name'";
+$userCheck = " select * from usertable where name ='$name'";
 
-$result = mysqli_query($con, $s);
+$result = mysqli_query($con, $userCheck);
 
 $num = mysqli_num_rows($result);
 
 // Statement checks that there'll be no duplicate usernames
 if($num == 1){
-    echo "username already taken";
+    echo "<script type='text/javascript'>alert('Username already registered')</script>";
+}
+// Two else ifs check if the user is creating too long of an account parameter (for their own sake)
+elseif(strlen($name) > 20){
+    echo "<script type='text/javascript'>alert('Username too long, please make it 20 or less characters long')</script>";
+}
+elseif (strlen($pass) > 20){
+    echo "<script type='text/javascript'>alert('Password too long, please make it 20 or less characters long')</script>";
 }
 // Otherwise, goes ahead with the procedure of creating an account
 else {
-    $reg = " INSERT into usertable(name, password) values ('$name', '$pass')";
+    $reg = " INSERT into usertable(name, password, score) values ('$name', '$pass', '$score')";
     mysqli_query($con, $reg);
-    echo "registration done good";
+    echo "<script type='text/javascript'>alert('Account successfully registered!')</script>";
 }
 
 ?>
