@@ -59,6 +59,11 @@ body {
     margin-top: 50px;
     color: white;
 }
+#login{
+    text-align: center;
+    margin-top: 50px;
+    color: white;
+}
 
 ::placeholder {
     color: white;
