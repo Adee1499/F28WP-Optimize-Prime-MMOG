@@ -5,7 +5,9 @@ const socketIO = require('socket.io');
 
 let io = socketIO(server);
 
+// direct to game page for testing
 const file = 'src/client/html/game.html';
+// const file = 'src/client/html/index.html;
 const options = {};
 
 const bundler = new Bundler(file, options);
