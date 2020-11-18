@@ -25,7 +25,7 @@ camelCase naming - e.g. likeThis
 
 Dawid
 
-Pyra
+[Pyra](https://github.com/SilentSierra)
 
 [Adrian](https://github.com/Adee1499)
 
