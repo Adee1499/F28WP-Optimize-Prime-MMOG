@@ -18,6 +18,18 @@ const connectedPromise = new Promise(resolve => {
     });
 });
 
+// Your socket id
+socket.on('player-number', num => {
+    console.log(`your socket id is ${num}`);
+})
+
+// Another player connected / disconnected
+// update current players number
+socket.on('player-connection', num => {
+    console.log(`${num} players online`);
+})
+
+
 
 // Game constants
 const GLOBAL_SPEED = 80; //ms
@@ -54,6 +66,14 @@ function gameLoop(pacman, ghosts) {
     }
 
     scoreTable.innerHTML = score;
+
+    // Pass current position to the server
+    socket.emit('position', pacman.pos);
+
+    // on position received
+    socket.on('position', pos => {
+        arena.addObject(pos, [OBJECT_TYPE.PACMAN]);
+    })
 }
 
 // Spawn a food in random empty location
@@ -71,8 +91,10 @@ function spawnFood(){
 function startGame(){
     usernameContainer.innerHTML = username;
     arena.createGrid(LAYOUT);
-    const pacman = new Pacman(2, 30);
-    arena.addObject(30, [OBJECT_TYPE.PACMAN]);
+    var index = emptyCells.splice(Math.floor(Math.random() * emptyCells.length), 1);
+    var randomPos = index[0];
+    const pacman = new Pacman(2, randomPos);
+    arena.addObject(randomPos, [OBJECT_TYPE.PACMAN]);
 
     document.addEventListener('keydown', (e) =>
         pacman.handleKeyInput(e, arena.objectExist.bind(arena))
