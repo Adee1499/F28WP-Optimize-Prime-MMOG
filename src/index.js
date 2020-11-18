@@ -65,15 +65,41 @@ function gameLoop(pacman, ghosts) {
         score += 10;
     }
 
+
     scoreTable.innerHTML = score;
 
     // Pass current position to the server
     socket.emit('position', pacman.pos);
 
+    socket.emit('previous', pacman.prevMovePos);
+
     // on position received
     socket.on('position', pos => {
+        // My very janky way of getting rid of duplicate pacmen
+        // It simply checks the 4 cells around the passed in pacman, if the pacman object exists there
+        // If it does, just removes the object to show the empty cell again
+        if(arena.objectExist(pos-1, [OBJECT_TYPE.PACMAN])){
+            arena.removeObject(pos-1, [OBJECT_TYPE.PACMAN]);
+        }
+        if(arena.objectExist(pos+1, [OBJECT_TYPE.PACMAN])){
+            arena.removeObject(pos+1, [OBJECT_TYPE.PACMAN]);
+        }
+        if(arena.objectExist(pos-28, [OBJECT_TYPE.PACMAN])){
+            arena.removeObject(pos-28, [OBJECT_TYPE.PACMAN]);
+        }
+        if(arena.objectExist(pos+28, [OBJECT_TYPE.PACMAN])){
+            arena.removeObject(pos+28, [OBJECT_TYPE.PACMAN]);
+        }
+
         arena.addObject(pos, [OBJECT_TYPE.PACMAN]);
     })
+
+    /*  My attempt of passing in a variable that held the pacman's previous position
+        I set it so in the pacman.js  setNewPos method, before setting the new position
+        It'd set this.prevMovePos to this.pos but alas it didn't work
+    socket.on('previous', prevMovePos => {
+        arena.removeObject(prevMovePos, [OBJECT_TYPE.PACMAN]);
+    })*/
 }
 
 // Spawn a food in random empty location

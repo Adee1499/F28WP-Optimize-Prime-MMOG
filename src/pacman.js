@@ -7,6 +7,7 @@ class Pacman {
         this.dir = null;
         this.timer = 0;
         this.rotation = true;
+        this.prevMovePos = this.pos;
     }
 
     shouldMove() {
@@ -37,6 +38,7 @@ class Pacman {
     }
 
     setNewPos(nextMovePos) {
+        let prevMovePos = this.pos;
         this.pos = nextMovePos;
     }
 
