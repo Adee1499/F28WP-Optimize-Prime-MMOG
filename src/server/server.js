@@ -34,6 +34,7 @@ io.on('connection', (socket) => {
         //delete clients[socket.id];
         playerIndex--;
         socket.broadcast.emit('player-connection', playerIndex);
+        socket.broadcast.emit('removal', socket.pos);
     });
     socket.emit('player-number', socket.id)
 
