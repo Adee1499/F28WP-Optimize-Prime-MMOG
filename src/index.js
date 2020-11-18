@@ -64,7 +64,18 @@ function gameLoop(pacman, ghosts) {
         currentFood--;
         score += 10;
     }
+    
+    // check if pacman eats powerpill
+    if (arena.objectExist(pacman.pos, OBJECT_TYPE.POWERPILL)) {
+        arena.removeObject(pacman.pos, [OBJECT_TYPE.POWERPILL]);
+        pacman.godMode = true;
+    }
 
+    //check if pacman eats other players
+    if (pacman.godMode && arena.objectExist(pacman.pos, OBJECT_TYPE.GHOST)) {
+        arena.removeObject(pacman.pos, [OBJECT_TYPE.GHOST]);
+        score += 100;
+    }
 
     scoreTable.innerHTML = score;
 
