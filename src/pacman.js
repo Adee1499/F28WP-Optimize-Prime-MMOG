@@ -8,6 +8,7 @@ class Pacman {
         this.timer = 0;
         this.rotation = true;
         this.prevMovePos = this.pos;
+        this.godMode = false;
     }
 
     shouldMove() {
