@@ -81,7 +81,7 @@ function gameLoop(pacman, ghosts) {
 
     // Pass current position to the server
     socket.emit('position', pacman.pos);
-
+    socket.emit('pellets', pacman.currentFood);
     socket.emit('previous', pacman.prevMovePos);
 
     // on position received
@@ -139,6 +139,10 @@ function startGame(){
 
     timer = setInterval(() => gameLoop(pacman), GLOBAL_SPEED);
 }
+// this.socket.on('disconnect', function (socketId){
+//     //clients[socketId].destroy();
+//     console.log(socketId + 'disconnected');
+// })
 
 // Initialize game
 startGame();
