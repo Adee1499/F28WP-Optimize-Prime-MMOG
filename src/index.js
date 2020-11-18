@@ -104,7 +104,11 @@ function gameLoop(pacman, ghosts) {
 
         arena.addObject(pos, [OBJECT_TYPE.PACMAN]);
     })
-
+    
+    socket.on('removal', pos => {
+        arena.removeObject(pos, [OBJECT_TYPE.PACMAN])
+    })
+    
     /*  My attempt of passing in a variable that held the pacman's previous position
         I set it so in the pacman.js  setNewPos method, before setting the new position
         It'd set this.prevMovePos to this.pos but alas it didn't work
