@@ -23,11 +23,35 @@ export const DIRECTIONS = {
     }
 };
 
+export const DIRECTIONS_GHOST = {
+    ArrowLeft: {
+        code: 37,
+        movement: -1,
+    },
+    ArrowUp: {
+        code: 38,
+        movement: -GRID_SIZE,
+    },
+    ArrowRight: {
+        code: 39,
+        movement: 1,
+    },
+    ArrowDown: {
+        code: 40,
+        movement: GRID_SIZE,
+    }
+};
+
 export const OBJECT_TYPE = {
     EMPTY: 'empty',
     WALL: 'wall',
     PACMAN: 'pacman',
     GHOST: 'ghost',
+    BLINKY: 'blinky',
+    PINKY: 'pinky',
+    INKY: 'inky',
+    CLYDE: 'clyde',
+    SCARED: 'scared',
     FOOD: 'food',
     POWERPILL: 'powerpill'
 };
@@ -39,7 +63,10 @@ export const CLASS_LIST = [
     OBJECT_TYPE.PACMAN,
     OBJECT_TYPE.FOOD,
     OBJECT_TYPE.POWERPILL,
-    OBJECT_TYPE.GHOST
+    OBJECT_TYPE.BLINKY,
+    OBJECT_TYPE.PINKY,
+    OBJECT_TYPE.INKY,
+    OBJECT_TYPE.CLYDE,
 ];
 
 // grid layout

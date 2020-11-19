@@ -1,6 +1,6 @@
-import { OBJECT_TYPE, DIRECTIONS } from "./setup";
+import { OBJECT_TYPE, DIRECTIONS_GHOST } from "./setup";
 
-class Pacman {
+class Ghost {
     constructor(speed, startPos) {
         this.pos = startPos;
         this.speed = speed;
@@ -8,12 +8,10 @@ class Pacman {
         this.timer = 0;
         this.rotation = true;
         this.prevMovePos = this.pos;
-        this.powerPill = false;
+        this.isScared = false;
     }
 
     shouldMove() {
-        if (!this.dir) return;
-
         if (this.timer === this.speed) {
             this.timer = 0;
             return true;
@@ -32,8 +30,10 @@ class Pacman {
     }
 
     makeMove() {
-        const classesToRemove = [OBJECT_TYPE.PACMAN];
-        const classesToAdd = [OBJECT_TYPE.PACMAN];
+        const classesToRemove = [OBJECT_TYPE.BLINKY, OBJECT_TYPE.SCARED];
+        let classesToAdd = [OBJECT_TYPE.BLINKY];
+
+        if (this.isScared) classesToAdd = [...classesToAdd, OBJECT_TYPE.SCARED];
 
         return { classesToRemove, classesToAdd };
     }
@@ -47,7 +47,7 @@ class Pacman {
         let dir;
 
         if (e.keyCode >= 37 && e.keyCode <= 40) {
-            dir = DIRECTIONS[e.key]
+            dir = DIRECTIONS_GHOST[e.key]
         } else {
             return;
         }
@@ -59,4 +59,4 @@ class Pacman {
 
 }
 
-export default Pacman;
+export default Ghost;
