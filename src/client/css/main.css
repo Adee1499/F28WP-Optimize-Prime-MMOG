@@ -194,11 +194,29 @@ input[type=password] {
     position: relative;
     border-radius: 10px 10px 2px 2px;
     border: none;
-    background: cyan;
 }
 
 .scared {
     background: blue !important;
+}
+
+.blinky {
+    background: red;
+    position: relative;
+    border-radius: 10px 10px 2px 2px;
+    border: none;
+}
+
+.pinky {
+    background: pink;
+}
+
+.inky {
+    background: cyan;
+}
+
+.clyde {
+    background: orange;
 }
 
 .pacman {
