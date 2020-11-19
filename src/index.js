@@ -110,8 +110,9 @@ function gameLoop(player) {
 
     // Pass current position and typeof player to the server
     socket.emit('position', {pos: player.pos, bool: isPacman});
-
+    socket.emit('pellets', pacman.currentFood);
     socket.emit('previous', player.prevMovePos);
+
 
     // on position received
     socket.on('position', ({pos, bool}) => {
@@ -139,7 +140,11 @@ function gameLoop(player) {
 
         arena.addObject(pos, playerType);
     })
-
+    
+    socket.on('removal', pos => {
+        arena.removeObject(pos, [OBJECT_TYPE.PACMAN])
+    })
+    
     /*  My attempt of passing in a variable that held the pacman's previous position
         I set it so in the pacman.js  setNewPos method, before setting the new position
         It'd set this.prevMovePos to this.pos but alas it didn't work
@@ -187,6 +192,10 @@ function startGame(){
 
     timer = setInterval(() => gameLoop(player), GLOBAL_SPEED);
 }
+// this.socket.on('disconnect', function (socketId){
+//     //clients[socketId].destroy();
+//     console.log(socketId + 'disconnected');
+// })
 
 // Initialize game
 startGame();
