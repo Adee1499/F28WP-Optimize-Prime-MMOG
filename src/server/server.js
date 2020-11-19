@@ -45,6 +45,10 @@ io.on('connection', (socket) => {
         socket.broadcast.emit('position', ({pos, bool}));
     })
 
+    // On game over
+    socket.on('gameOver', (socket) => {
+        socket.Close();
+
     //Receive pellet positions
     socket.on('pellets', currentFood => {
         socket.broadcast.emit('pellets', currentFood);

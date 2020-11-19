@@ -46,6 +46,8 @@ const arena = Arena.createArena(gameGrid, LAYOUT);
 let score = 0;
 let timer = null;
 let powerPillActive = false;
+var player = null;
+var playerType = null;
 
 //array containing indexes of empty cells in layout (arena.js)
 let emptyCells = [];
@@ -84,6 +86,7 @@ function gameLoop(player) {
         if (arena.objectExist(player.pos, OBJECT_TYPE.POWERPILL)) {
             arena.removeObject(player.pos, [OBJECT_TYPE.POWERPILL]);
             player.powerPill = true;
+            gameOver();
         }
 
         // change ghosts scare mode depending on powerpill
@@ -118,7 +121,6 @@ function gameLoop(player) {
     socket.on('position', ({pos, bool}) => {
 
         // Decide whether to spawn pacman or ghost
-        var playerType = null;
         if (bool) playerType = [OBJECT_TYPE.PACMAN];
         if (!bool) playerType = [OBJECT_TYPE.BLINKY];
 
@@ -166,7 +168,6 @@ function spawnFood(){
 }
 
 function startGame(){
-    var player = null;
     powerPillActive = false;
     usernameContainer.innerHTML = username;
     arena.createGrid(LAYOUT);
@@ -186,9 +187,11 @@ function startGame(){
     //     new Ghost(5, 267, OBJECT_TYPE.BLINKY)
     // ];
 
-    document.addEventListener('keydown', (e) =>
-        player.handleKeyInput(e, arena.objectExist.bind(arena))
-    );
+    // document.addEventListener('keydown', (e) =>
+    //     player.handleKeyInput(e, arena.objectExist.bind(arena))
+    // );
+
+    document.addEventListener('keydown', inputHandler);
 
     timer = setInterval(() => gameLoop(player), GLOBAL_SPEED);
 }
@@ -196,6 +199,15 @@ function startGame(){
 //     //clients[socketId].destroy();
 //     console.log(socketId + 'disconnected');
 // })
+
+function inputHandler(e) {
+    player.handleKeyInput(e, arena.objectExist.bind(arena));
+}
+
+function gameOver() {
+    document.removeEventListener('keydown', inputHandler);
+    console.log('GAME OVER');
+}
 
 // Initialize game
 startGame();
