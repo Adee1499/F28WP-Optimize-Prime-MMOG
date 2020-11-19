@@ -65,7 +65,6 @@ function checkCollision(pacman, ghosts) {
 }
 
 function gameLoop(player) {
-    console.log(isPacman)
     arena.moveCharacter(player);
     while (currentFood < maxFood / 3) spawnFood();
 
@@ -81,11 +80,17 @@ function gameLoop(player) {
         score += 10;
     }
 
-    if (player instanceof Pacman) {
+    // Receive powerpill updates from server
+    socket.on('powerpill', pos => {
+        arena.removeObject(pos, [OBJECT_TYPE.POWERPILL]);
+    })
+
+    if (isPacman) {
         // check if pacman eats powerpill
         if (arena.objectExist(player.pos, OBJECT_TYPE.POWERPILL)) {
             arena.removeObject(player.pos, [OBJECT_TYPE.POWERPILL]);
             player.powerPill = true;
+            socket.emit('powerpill', player.pos);
             gameOver();
         }
 
@@ -96,13 +101,21 @@ function gameLoop(player) {
         }
 
         //check if pacman eats other players
-        if (player.powerPill && arena.objectExist(player.pos, OBJECT_TYPE.GHOST)) {
-            arena.removeObject(player.pos, [OBJECT_TYPE.GHOST]);
+        if (player.powerPill && arena.objectExist(player.pos, OBJECT_TYPE.BLINKY)) {
+            arena.removeObject(player.pos, [OBJECT_TYPE.BLINKY]);
             score += 100;
+        }
+
+        // check if pacman is eaten by a ghost
+        if (arena.objectExist(player.pos, OBJECT_TYPE.BLINKY)) {
+            gameOver();
+            arena.removeObject(player.pos, [OBJECT_TYPE.PACMAN]);
+            player = null;
+            console.log('game over')
         }
     }
 
-    if (player instanceof Ghost) {
+    if (!isPacman) {
         if (!player.isScared && arena.objectExist(player.pos, OBJECT_TYPE.PACMAN)) {
             arena.removeObject(player.pos, [OBJECT_TYPE.PACMAN]);
             score += 100;
@@ -112,13 +125,13 @@ function gameLoop(player) {
     scoreTable.innerHTML = score;
 
     // Pass current position and typeof player to the server
-    socket.emit('position', {pos: player.pos, bool: isPacman});
-    socket.emit('pellets', pacman.currentFood);
+    socket.emit('position', {pos: player.pos, bool: isPacman, rot: player.dir.rotation});
+    //socket.emit('pellets', pacman.currentFood);
     socket.emit('previous', player.prevMovePos);
 
 
     // on position received
-    socket.on('position', ({pos, bool}) => {
+    socket.on('position', ({pos, bool, rot}) => {
 
         // Decide whether to spawn pacman or ghost
         if (bool) playerType = [OBJECT_TYPE.PACMAN];
@@ -141,12 +154,15 @@ function gameLoop(player) {
         }
 
         arena.addObject(pos, playerType);
+
+        if (!arena.objectExist(pos, [OBJECT_TYPE.BLINKY])) arena.rotateDiv(pos, rot);
     })
-    
+
     socket.on('removal', pos => {
         arena.removeObject(pos, [OBJECT_TYPE.PACMAN])
+        arena.removeObject(pos, [OBJECT_TYPE.BLINKY])
     })
-    
+
     /*  My attempt of passing in a variable that held the pacman's previous position
         I set it so in the pacman.js  setNewPos method, before setting the new position
         It'd set this.prevMovePos to this.pos but alas it didn't work

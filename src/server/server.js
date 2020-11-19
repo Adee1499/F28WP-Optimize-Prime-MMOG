@@ -39,19 +39,21 @@ io.on('connection', (socket) => {
     socket.emit('player-number', socket.id)
 
     // Receive player positions and type
-    socket.on('position', ({pos, bool}) => {
+    socket.on('position', ({pos, bool, rot}) => {
         // console.log(socket.id + `'s current position is ${pos}`);
         // emit to other players
-        socket.broadcast.emit('position', ({pos, bool}));
+        socket.broadcast.emit('position', ({pos, bool, rot}));
     })
 
-    // On game over
-    socket.on('gameOver', (socket) => {
-        socket.Close();
 
     //Receive pellet positions
     socket.on('pellets', currentFood => {
         socket.broadcast.emit('pellets', currentFood);
 
     })
-});
+    // Receive eaten powerpill position and broadcast to clients
+    socket.on('powerpill', pos => {
+        socket.broadcast.emit('powerpill', pos);
+    })
+})
+
