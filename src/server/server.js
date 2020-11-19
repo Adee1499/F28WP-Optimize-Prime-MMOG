@@ -5,9 +5,7 @@ const socketIO = require('socket.io');
 
 let io = socketIO(server);
 
-// direct to game page for testing
 const file = 'src/client/html/game.html';
-// const file = 'src/client/html/index.html;
 const options = {};
 
 const bundler = new Bundler(file, options);
@@ -22,17 +20,23 @@ server.listen(port, () => {
 
 // Keep track of number of players connected
 let playerIndex = 0;
+//let clients = {};
+
 
 io.on('connection', (socket) => {
     console.log('User connected: ' + socket.id);
     playerIndex++;
+    //clients[socket.id] = socket;
     socket.broadcast.emit('player-connection', playerIndex);
     socket.on('disconnect', () => {
-        console.log('user disconnected');
+
+        console.log(socket.id + ' disconnected');
+        //delete clients[socket.id];
         playerIndex--;
         socket.broadcast.emit('player-connection', playerIndex);
+        socket.broadcast.emit('removal', socket.pos);
     });
-    socket.emit('player-number', socket.id);
+    socket.emit('player-number', socket.id)
 
     // Receive player positions and type
     socket.on('position', ({pos, bool}) => {
@@ -44,5 +48,10 @@ io.on('connection', (socket) => {
     // On game over
     socket.on('gameOver', (socket) => {
         socket.Close();
+
+    //Receive pellet positions
+    socket.on('pellets', currentFood => {
+        socket.broadcast.emit('pellets', currentFood);
+
     })
 });
