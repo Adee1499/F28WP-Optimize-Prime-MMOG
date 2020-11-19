@@ -40,4 +40,9 @@ io.on('connection', (socket) => {
         // emit to other players
         socket.broadcast.emit('position', ({pos, bool}));
     })
+
+    // On game over
+    socket.on('gameOver', (socket) => {
+        socket.Close();
+    })
 });
