@@ -12,16 +12,19 @@ $pass = mysqli_real_escape_string($con, $_POST['password']);
 
 
 // This wilL create a variable of the values of the row if the username is already in it
+// mysqli_real_escape_string should remove special characters in the string
 $userCheck = " select * from usertable where name ='$name' && password = '$pass'";
 
 $result = mysqli_query($con, $userCheck);
 
 $num = mysqli_num_rows($result);
 
-// Statement checks that there'll be no duplicate usernames
+// $num will be 1 if a user of the name and password exists (both have to be correct)
 if ($num == 1){
+    $score = "SELECT score from usertable WHERE name = '$name'";
+
     include '../client/html/game.html';
-    echo "welcome";
+    echo "Username: ", $name, "      High Score: ", $score;
 }
 else{
     include '../client/html/index.html';

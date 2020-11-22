@@ -18,6 +18,7 @@ $con = mysqli_connect('localhost','id15359279_prime','YC[AuLan|UHxvi0+');
 mysqli_select_db($con, 'id15359279_pacman');
 
 // POST > GET as it doesn't put it in URL
+// mysqli_real_escape_string should remove special characters in the string
 $name = mysqli_real_escape_string($con, $_POST['user']);
 $pass = mysqli_real_escape_string($con, $_POST['password']);
 $score = 0;
