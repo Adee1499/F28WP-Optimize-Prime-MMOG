@@ -18,8 +18,8 @@ $con = mysqli_connect('localhost','id15359279_prime','YC[AuLan|UHxvi0+');
 mysqli_select_db($con, 'id15359279_pacman');
 
 // POST > GET as it doesn't put it in URL
-$name = $_POST['user'];
-$pass = $_POST['password'];
+$name = mysqli_real_escape_string($con, $_POST['user']);
+$pass = mysqli_real_escape_string($con, $_POST['password']);
 $score = 0;
 
 // This wilL create a variable of the values of the row if the username is already in it
