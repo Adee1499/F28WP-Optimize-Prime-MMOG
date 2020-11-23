@@ -83,9 +83,9 @@ function gameLoop(player) {
     // Receive powerpill updates from server
     socket.on('powerpill', pos => {
         arena.removeObject(pos, [OBJECT_TYPE.POWERPILL]);
-        // if (isPacman == false){
-        //
-        // }
+        if (isPacman == false){
+            player.isScared = true;
+        }
     })
 
     if (isPacman) {
@@ -95,15 +95,7 @@ function gameLoop(player) {
             player.powerPill = true;
             score += 5;
             socket.emit('powerpill', player.pos);
-            //socket.broadcast.emit('beScared')
-            gameOver();
         }
-
-        // change ghosts scare mode depending on powerpill
-        // if (player.powerPill !== powerPillActive) {
-        //     powerPillActive = player.powerPill;
-        //
-        // }
 
         //check if pacman eats other players
         if (player.powerPill && arena.objectExist(player.pos, OBJECT_TYPE.BLINKY)) {
@@ -113,10 +105,7 @@ function gameLoop(player) {
 
         // check if pacman is eaten by a ghost
         if (arena.objectExist(player.pos, OBJECT_TYPE.BLINKY)) {
-            //arena.removeObject(player.pos, [OBJECT_TYPE.PACMAN]);
-            //player = null;
             gameOver();
-            //console.log('game over')
         }
     }
 
@@ -125,13 +114,15 @@ function gameLoop(player) {
             arena.removeObject(player.pos, [OBJECT_TYPE.PACMAN]);
             score += 100;
         }
+        if (player.isScared && arena.objectExist(player.pos, OBJECT_TYPE.PACMAN)) {
+            gameOver();
+        }
     }
 
     scoreTable.innerHTML = score;
 
     // Pass current position and typeof player to the server
     socket.emit('position', {pos: player.pos, bool: isPacman, rot: player.dir.rotation});
-    //socket.emit('pellets', pacman.currentFood);
     socket.emit('previous', player.prevMovePos);
 
 
@@ -166,6 +157,7 @@ function gameLoop(player) {
     socket.on('removal', pos => {
         arena.removeObject(pos, [OBJECT_TYPE.PACMAN])
         arena.removeObject(pos, [OBJECT_TYPE.BLINKY])
+        gameOver();
     })
 
     /*  My attempt of passing in a variable that held the pacman's previous position
@@ -216,10 +208,6 @@ function startGame(){
 
     timer = setInterval(() => gameLoop(player), GLOBAL_SPEED);
 }
-// this.socket.on('disconnect', function (socketId){
-//     //clients[socketId].destroy();
-//     console.log(socketId + 'disconnected');
-// })
 
 function inputHandler(e) {
     player.handleKeyInput(e, arena.objectExist.bind(arena));
