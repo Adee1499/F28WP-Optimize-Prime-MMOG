@@ -83,6 +83,9 @@ function gameLoop(player) {
     // Receive powerpill updates from server
     socket.on('powerpill', pos => {
         arena.removeObject(pos, [OBJECT_TYPE.POWERPILL]);
+        // if (isPacman == false){
+        //
+        // }
     })
 
     if (isPacman) {
@@ -90,15 +93,17 @@ function gameLoop(player) {
         if (arena.objectExist(player.pos, OBJECT_TYPE.POWERPILL)) {
             arena.removeObject(player.pos, [OBJECT_TYPE.POWERPILL]);
             player.powerPill = true;
+            score += 5;
             socket.emit('powerpill', player.pos);
+            //socket.broadcast.emit('beScared')
             gameOver();
         }
 
         // change ghosts scare mode depending on powerpill
-        if (player.powerPill !== powerPillActive) {
-            powerPillActive = player.powerPill;
-
-        }
+        // if (player.powerPill !== powerPillActive) {
+        //     powerPillActive = player.powerPill;
+        //
+        // }
 
         //check if pacman eats other players
         if (player.powerPill && arena.objectExist(player.pos, OBJECT_TYPE.BLINKY)) {
@@ -108,10 +113,10 @@ function gameLoop(player) {
 
         // check if pacman is eaten by a ghost
         if (arena.objectExist(player.pos, OBJECT_TYPE.BLINKY)) {
+            //arena.removeObject(player.pos, [OBJECT_TYPE.PACMAN]);
+            //player = null;
             gameOver();
-            arena.removeObject(player.pos, [OBJECT_TYPE.PACMAN]);
-            player = null;
-            console.log('game over')
+            //console.log('game over')
         }
     }
 
@@ -223,6 +228,8 @@ function inputHandler(e) {
 function gameOver() {
     document.removeEventListener('keydown', inputHandler);
     console.log('GAME OVER');
+    //arena.removeObject(player.pos);
+    player = null;
 }
 
 // Initialize game
