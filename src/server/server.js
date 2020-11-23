@@ -20,18 +20,15 @@ server.listen(port, () => {
 
 // Keep track of number of players connected
 let playerIndex = 0;
-//let clients = {};
 
 
 io.on('connection', (socket) => {
     console.log('User connected: ' + socket.id);
     playerIndex++;
-    //clients[socket.id] = socket;
     socket.broadcast.emit('player-connection', playerIndex);
     socket.on('disconnect', () => {
 
         console.log(socket.id + ' disconnected');
-        //delete clients[socket.id];
         playerIndex--;
         socket.broadcast.emit('player-connection', playerIndex);
         socket.broadcast.emit('removal', socket.pos);
