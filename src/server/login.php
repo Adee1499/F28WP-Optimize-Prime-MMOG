@@ -21,7 +21,15 @@ $num = mysqli_num_rows($result);
 
 // $num will be 1 if a user of the name and password exists (both have to be correct)
 if ($num == 1){
-    $score = "SELECT score from usertable WHERE name = '$name'";
+    $scoreSql = "SELECT * FROM usertable WHERE name = '$name';";
+    $result = mysqli_query($con, $scoreSql);
+    $resultCheck = mysqli_num_rows($result);
+    if($resultCheck > 0){
+        while($row = mysqli_fetch_assoc($result)){
+            $score = $row['score'];
+        }
+    }
+
 
     include '../client/html/game.html';
     echo "Username: ", $name, "      High Score: ", $score;
