@@ -53,7 +53,8 @@ export const OBJECT_TYPE = {
     CLYDE: 'clyde',
     SCARED: 'scared',
     FOOD: 'food',
-    POWERPILL: 'powerpill'
+    POWERPILL: 'powerpill',
+    GOD: 'godpacman'
 };
 
 // lookup array for classes - to draw the grid
@@ -67,6 +68,7 @@ export const CLASS_LIST = [
     OBJECT_TYPE.PINKY,
     OBJECT_TYPE.INKY,
     OBJECT_TYPE.CLYDE,
+    OBJECT_TYPE.GOD,
 ];
 
 // grid layout
