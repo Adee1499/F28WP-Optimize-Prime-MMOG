@@ -1,5 +1,5 @@
 export const GRID_SIZE = 36;
-export const CELL_SIZE = 32;
+export const CELL_SIZE = 16;
 export const DIRECTIONS = {
     ArrowLeft: {
         code: 37,
