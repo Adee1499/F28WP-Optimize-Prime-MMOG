@@ -1,4 +1,4 @@
-import { LAYOUT, OBJECT_TYPE } from "./setup";
+import {GRID_SIZE, LAYOUT, OBJECT_TYPE} from "./setup";
 import Arena from './arena';
 import Pacman from "./pacman";
 import Ghost from './ghost';
@@ -171,21 +171,22 @@ function gameLoop(player) {
         if(arena.objectExist(pos+1, playerType)){
             arena.removeObject(pos+1, playerType);
         }
-        if(arena.objectExist(pos-36, playerType)){
-            arena.removeObject(pos-36, playerType);
+        if(arena.objectExist(pos-GRID_SIZE, playerType)){
+            arena.removeObject(pos-GRID_SIZE, playerType);
         }
-        if(arena.objectExist(pos+36, playerType)){
-            arena.removeObject(pos+36, playerType);
+        if(arena.objectExist(pos+GRID_SIZE, playerType)){
+            arena.removeObject(pos+GRID_SIZE, playerType);
         }
 
         arena.addObject(pos, playerType);
 
-        if (!arena.objectExist(pos, randGhost)) arena.rotateDiv(pos, rot);
+        if (!arena.objectExist(pos, randGhost) || (!arena.objectExist(pos, [OBJECT_TYPE.SCARED]))) arena.rotateDiv(pos, rot);
     })
 
     socket.on('removal', pos => {
         arena.removeObject(pos, [OBJECT_TYPE.PACMAN])
         arena.removeObject(pos, randGhost)
+        arena.removeObject(pos, [OBJECT_TYPE.SCARED])
         gameOver();
     })
 
@@ -223,15 +224,6 @@ function startGame(){
         player = new Ghost(2, randomPos);
             arena.addObject(randomPos, randGhost);
     }
-
-    //
-    // const ghosts = [
-    //     new Ghost(5, 267, OBJECT_TYPE.BLINKY)
-    // ];
-
-    // document.addEventListener('keydown', (e) =>
-    //     player.handleKeyInput(e, arena.objectExist.bind(arena))
-    // );
 
     document.addEventListener('keydown', inputHandler);
 

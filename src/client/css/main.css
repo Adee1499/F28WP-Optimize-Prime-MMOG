@@ -198,6 +198,9 @@ input[type=password] {
 
 .scared {
     background: blue !important;
+    position: relative;
+    border-radius: 5px 5px 1px 1px;
+    border: none;
 }
 
 .blinky {
