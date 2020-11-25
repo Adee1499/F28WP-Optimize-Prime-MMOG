@@ -190,16 +190,6 @@ input[type=password] {
 /*    transform: rotate(0.5turn);*/
 /*}*/
 
-.grid{
-    display: flex;
-    flex-wrap: wrap;
-    width: 896px;
-    height: 640px;
-    border: 10px solid #333;
-    box-shadow: 5px 5px 10px #444;
-    margin: 30px auto 0;
-    position: relative;
-}
 
 .wall{
     background-color: darkslateblue;
@@ -210,55 +200,55 @@ input[type=password] {
 }
 
 .food{
-  border: 4px solid black;
+  border: 6px solid black;
   border-radius: 50%;
   background-color: #ffffff;
 }
 
 .powerpill{
-    border: 3px solid black;
+    border: 4px solid black;
     border-radius: 50%;
     background-color: orange;
 }
 
 .ghost {
     position: relative;
-    border-radius: 5px 5px 1px 1px;
+    border-radius: 8px 8px 2px 2px;
     border: none;
 }
 
 .scared {
     background: blue !important;
     position: relative;
-    border-radius: 5px 5px 1px 1px;
+    border-radius: 8px 8px 2px 2px;
     border: none;
 }
 
 .blinky {
     background: red;
     position: relative;
-    border-radius: 5px 5px 1px 1px;
+    border-radius: 8px 8px 2px 2px;
     border: none;
 }
 
 .pinky {
     background: pink;
     position: relative;
-    border-radius: 5px 5px 1px 1px;
+    border-radius: 8px 8px 2px 2px;
     border: none;
 }
 
 .inky {
     background: cyan;
     position: relative;
-    border-radius: 5px 5px 1px 1px;
+    border-radius: 8px 8px 2px 2px;
     border: none;
 }
 
 .clyde {
     background: orange;
     position: relative;
-    border-radius: 5px 5px 1px 1px;
+    border-radius: 8px 8px 2px 2px;
     border: none;
 }
 
@@ -268,12 +258,12 @@ input[type=password] {
     border-radius: 50%;
     clip-path: polygon(
             0 0,
-            16px 0,
-            16px -4px,
-            7px 8px,
-            16px 20px,
-            16px 16px,
-            0 16px
+            24px 0,
+            24px -6px,
+            11px 12px,
+            24px 30px,
+            24px 24px,
+            0 24px
     );
     animation: chew 0.2s linear forwards infinite;
 }
@@ -282,12 +272,12 @@ input[type=password] {
     50% {
         clip-path: polygon(
                 0 0,
-                16px 0,
-                16px 8px,
-                7px 8px,
-                16px 8px,
-                16px 16px,
-                0 16px
+                24px 0,
+                24px 12px,
+                11px 12px,
+                24px 12px,
+                24px 24px,
+                0 24px
         );
     }
 }
