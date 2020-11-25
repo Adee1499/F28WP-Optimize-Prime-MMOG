@@ -30,10 +30,12 @@ class Pacman {
 
         return { nextMovePos, direction: this.dir };
     }
-
+    
     makeMove() {
-        const classesToRemove = [OBJECT_TYPE.PACMAN];
-        const classesToAdd = [OBJECT_TYPE.PACMAN];
+        const classesToRemove = [OBJECT_TYPE.PACMAN, OBJECT_TYPE.GOD];
+        let classesToAdd = [OBJECT_TYPE.PACMAN];
+
+        if(this.powerPill) classesToAdd = [...classesToAdd, OBJECT_TYPE.GOD];
 
         return { classesToRemove, classesToAdd };
     }
