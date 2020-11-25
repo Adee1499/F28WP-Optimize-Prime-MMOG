@@ -178,11 +178,29 @@ function gameLoop(player) {
             arena.removeObject(pos+GRID_SIZE, playerType);
         }
 
+        // Same way as above of removing ghost once that said ghost is scared
+        if (scared) {
+            if (arena.objectExist(pos - 1, [OBJECT_TYPE.BLINKY])) {
+                arena.removeObject(pos - 1, [OBJECT_TYPE.BLINKY]);
+            }
+            if (arena.objectExist(pos + 1, [OBJECT_TYPE.BLINKY])) {
+                arena.removeObject(pos + 1, [OBJECT_TYPE.BLINKY]);
+            }
+            if (arena.objectExist(pos - GRID_SIZE, [OBJECT_TYPE.BLINKY])) {
+                arena.removeObject(pos - GRID_SIZE, [OBJECT_TYPE.BLINKY]);
+            }
+            if (arena.objectExist(pos + GRID_SIZE, [OBJECT_TYPE.BLINKY])) {
+                arena.removeObject(pos + GRID_SIZE, [OBJECT_TYPE.BLINKY]);
+            }
+        }
+
+
         arena.addObject(pos, playerType);
 
         if (!arena.objectExist(pos, randGhost) || (!arena.objectExist(pos, [OBJECT_TYPE.SCARED]))) arena.rotateDiv(pos, rot);
     })
 
+    // this doesn't do anything at the moment as far as I can tell
     socket.on('removal', pos => {
         arena.removeObject(pos, [OBJECT_TYPE.PACMAN])
         arena.removeObject(pos, randGhost)
