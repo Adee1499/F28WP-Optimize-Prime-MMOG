@@ -62,12 +62,14 @@ socket.on('player-connection', num => {
 
 // Game constants
 const GLOBAL_SPEED = 80; //ms
+const POWER_PILL_TIME = 10000; // ms
 const arena = Arena.createArena(gameGrid, LAYOUT);
 
 // Initial setup
 let score = 0;
 let timer = null;
 let powerPillActive = false;
+let powerPillTimer = null;
 var player = null;
 var playerType = null;
 
@@ -82,10 +84,6 @@ for (var i = 0; i < LAYOUT.length; i++) {
 const maxFood = Math.floor(emptyCells.length / 4);
 let currentFood = 0;
 
-
-function checkCollision(pacman, ghosts) {
-
-}
 
 function gameLoop(player) {
     arena.moveCharacter(player);
@@ -118,6 +116,12 @@ function gameLoop(player) {
             player.powerPill = true;
             score += 5;
             socket.emit('powerpill', player.pos);
+
+            clearTimeout(powerPillTimer);
+            powerPillTimer = setTimeout(
+                () => (player.powerPill = false),
+                POWER_PILL_TIME
+            );
         }
 
         //check if pacman eats other players
@@ -144,18 +148,19 @@ function gameLoop(player) {
 
     scoreTable.innerHTML = score;
 
-    // Pass current position and typeof player to the server
-    socket.emit('position', {pos: player.pos, bool: isPacman, rot: player.dir.rotation});
+    // Pass current position and typeof player to the server and isScared
+    socket.emit('position', {pos: player.pos, bool: isPacman, rot: player.dir.rotation, scared: player.isScared});
     socket.emit('previous', player.prevMovePos);
 
 
     // on position received
-    socket.on('position', ({pos, bool, rot}) => {
+    socket.on('position', ({pos, bool, rot, scared}) => {
 
         // Decide whether to spawn pacman or ghost
 
         if (bool) playerType = [OBJECT_TYPE.PACMAN];
-        if (!bool) playerType = randGhost;
+        if (!bool && !scared) playerType = randGhost;
+        if (!bool && scared) playerType = [OBJECT_TYPE.SCARED];
 
         // My very janky way of getting rid of duplicate pacmen
         // It simply checks the 4 cells around the passed in pacman, if the pacman object exists there
