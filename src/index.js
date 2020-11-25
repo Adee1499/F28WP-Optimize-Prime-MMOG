@@ -118,11 +118,17 @@ function gameLoop(player) {
         if (!isPacman){
             player.isScared = true;
         }
+        else if (Pacman){
+            player.isGod = true;
+        }
     })
 
     socket.on('powerpill-over', pos => {
         if (!isPacman){
             player.isScared = false;
+        }
+        else if (Pacman){
+            player.isGod = false;
         }
     })
 
