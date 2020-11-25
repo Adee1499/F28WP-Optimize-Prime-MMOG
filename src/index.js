@@ -183,6 +183,7 @@ function gameLoop(player) {
     // on position received
     socket.on('position', ({pos, bool, rot, scared}) => {
 
+
         // Decide whether to spawn pacman or ghost
 
         if (bool) playerType = [OBJECT_TYPE.PACMAN];
@@ -271,6 +272,7 @@ function spawnFood(){
 }
 
 function startGame(){
+    playAudio(introWav);
     powerPillActive = false;
     usernameContainer.innerHTML = username;
     arena.createGrid(LAYOUT);
@@ -303,5 +305,4 @@ function gameOver() {
 }
 
 // Initialize game
-playAudio(introWav);
 startGame();
