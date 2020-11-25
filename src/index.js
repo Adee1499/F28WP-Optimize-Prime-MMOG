@@ -146,11 +146,11 @@ function gameLoop(player) {
         if(arena.objectExist(pos+1, playerType)){
             arena.removeObject(pos+1, playerType);
         }
-        if(arena.objectExist(pos-28, playerType)){
-            arena.removeObject(pos-28, playerType);
+        if(arena.objectExist(pos-36, playerType)){
+            arena.removeObject(pos-36, playerType);
         }
-        if(arena.objectExist(pos+28, playerType)){
-            arena.removeObject(pos+28, playerType);
+        if(arena.objectExist(pos+36, playerType)){
+            arena.removeObject(pos+36, playerType);
         }
 
         arena.addObject(pos, playerType);

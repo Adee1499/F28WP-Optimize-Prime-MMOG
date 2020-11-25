@@ -12,10 +12,8 @@ able to view the database.
 */
 
 // Connecting to mysql database - host, username, password
-$con = mysqli_connect('localhost','id15359279_prime','YC[AuLan|UHxvi0+');
+$con = mysqli_connect('localhost','id15359279_prime','YC[AuLan|UHxvi0+', 'id15359279_pacman');
 
-// Specifically selects a database from the server (could be placed in $con but it's good here)
-mysqli_select_db($con, 'id15359279_pacman');
 
 // POST > GET as it doesn't put it in URL
 // mysqli_real_escape_string should remove special characters in the string
@@ -43,9 +41,26 @@ elseif (strlen($pass) > 20){
 }
 // Otherwise, goes ahead with the procedure of creating an account
 else {
-    $reg = " INSERT into usertable(name, password, score) values ('$name', '$pass', '$score')";
-    mysqli_query($con, $reg);
-    echo "<script type='text/javascript'>alert('Account successfully registered!')</script>";
+    // Placeholder statement - question marks act as placeholder for data that'll be passed in
+    $reg = " INSERT INTO usertable(name, password, score) VALUES (?, ?, ?)";
+    // Creating a prepared statement for handling SQL injection to protect database
+    $stmt = mysqli_stmt_init($con);
+
+    // Defining the prepared statement
+    if(!mysqli_stmt_prepare($stmt, $reg)){
+        echo "SQL statement failed";
+    }
+    else{
+        // Binding parameters to the placeholder, types "ssi" indicates type of data being passed in
+        mysqli_stmt_bind_param($stmt, "ssi", $name, $pass, $score);
+        // Runs the parameters inside the database - will register an account
+        mysqli_stmt_execute($stmt);
+        // Tell the user it worked!
+        echo "<script type='text/javascript'>alert('Account successfully registered!')</script>";
+    }
+
+
+
 }
 
 ?>
