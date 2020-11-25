@@ -20,13 +20,25 @@ $con = mysqli_connect('localhost','id15359279_prime','YC[AuLan|UHxvi0+', 'id1535
 $name = mysqli_real_escape_string($con, $_POST['user']);
 $pass = mysqli_real_escape_string($con, $_POST['password']);
 $score = 0;
+$num = 0;
 
+// PREPARED STATEMENT FOR CHECKING IF USERNAME ALREADY EXISTS
 // This wilL create a variable of the values of the row if the username is already in it
-$userCheck = " select * from usertable where name ='$name'";
+$userCheck = " select name from usertable where name = ?";
+$stmt = mysqli_stmt_init($con);
+if(!mysqli_stmt_prepare($stmt, $userCheck)){
+    echo "SQL statement failed";
+}
+else{
+    mysqli_stmt_bind_param($stmt, "s", $name);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+    $num = mysqli_num_rows($result);
+}
 
-$result = mysqli_query($con, $userCheck);
+//$result = mysqli_query($con, $userCheck);
 
-$num = mysqli_num_rows($result);
+//$num = mysqli_num_rows($result);
 
 // Statement checks that there'll be no duplicate usernames
 if($num == 1){
@@ -41,7 +53,8 @@ elseif (strlen($pass) > 20){
 }
 // Otherwise, goes ahead with the procedure of creating an account
 else {
-    // Placeholder statement - question marks act as placeholder for data that'll be passed in
+
+    // PREPARED STATEMENT FOR INSERTING DATA INTO DATABASE
     $reg = " INSERT INTO usertable(name, password, score) VALUES (?, ?, ?)";
     // Creating a prepared statement for handling SQL injection to protect database
     $stmt = mysqli_stmt_init($con);
@@ -51,16 +64,15 @@ else {
         echo "SQL statement failed";
     }
     else{
+        // Hashing and salting the password being inserted into the database
+        $hashedPass = password_hash($pass, PASSWORD_DEFAULT);
         // Binding parameters to the placeholder, types "ssi" indicates type of data being passed in
-        mysqli_stmt_bind_param($stmt, "ssi", $name, $pass, $score);
+        mysqli_stmt_bind_param($stmt, "ssi", $name, $hashedPass, $score);
         // Runs the parameters inside the database - will register an account
         mysqli_stmt_execute($stmt);
         // Tell the user it worked!
         echo "<script type='text/javascript'>alert('Account successfully registered!')</script>";
     }
-
-
-
 }
 
 ?>
