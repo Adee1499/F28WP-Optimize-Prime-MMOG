@@ -248,6 +248,7 @@ function gameLoop(player) {
         arena.removeObject(pos, [OBJECT_TYPE.PACMAN])
         arena.removeObject(pos, randGhost)
         arena.removeObject(pos, [OBJECT_TYPE.SCARED])
+        arena.removeObject(pos, [OBJECT_TYPE.GOD])
     })
 
 
