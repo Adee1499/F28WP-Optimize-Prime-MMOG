@@ -52,5 +52,9 @@ io.on('connection', (socket) => {
     socket.on('powerpill', pos => {
         socket.broadcast.emit('powerpill', pos);
     })
+
+    socket.on('playereaten', pos => {
+        socket.broadcast.emit('removal', pos);
+    })
 })
 

@@ -124,25 +124,30 @@ function gameLoop(player) {
             );
         }
 
-        //check if pacman eats other players
-        if (player.powerPill && arena.objectExist(player.pos, randGhost)) {
-            arena.removeObject(player.pos, randGhost);
+        //check if pacman eats scared ghost
+        if (player.powerPill && arena.objectExist(player.pos, [OBJECT_TYPE.SCARED])) {
+            arena.removeObject(player.pos, [OBJECT_TYPE.SCARED]);
             score += 100;
         }
 
         // check if pacman is eaten by a ghost
         if (arena.objectExist(player.pos, randGhost)) {
             gameOver();
+            socket.emit('playereaten', player.pos);
         }
     }
 
+    // if is ghost
     if (!isPacman) {
+        // if not scared and eats pacman
         if (!player.isScared && arena.objectExist(player.pos, OBJECT_TYPE.PACMAN)) {
             arena.removeObject(player.pos, [OBJECT_TYPE.PACMAN]);
             score += 100;
         }
+        // if scared and gets eaten by pacman
         if (player.isScared && arena.objectExist(player.pos, OBJECT_TYPE.PACMAN)) {
             gameOver();
+            socket.emit('playereaten', player.pos);
         }
     }
 
@@ -200,13 +205,13 @@ function gameLoop(player) {
         if (!arena.objectExist(pos, randGhost) || (!arena.objectExist(pos, [OBJECT_TYPE.SCARED]))) arena.rotateDiv(pos, rot);
     })
 
-    // this doesn't do anything at the moment as far as I can tell
+
     socket.on('removal', pos => {
         arena.removeObject(pos, [OBJECT_TYPE.PACMAN])
         arena.removeObject(pos, randGhost)
         arena.removeObject(pos, [OBJECT_TYPE.SCARED])
-        gameOver();
     })
+
 
     /*  My attempt of passing in a variable that held the pacman's previous position
         I set it so in the pacman.js  setNewPos method, before setting the new position
