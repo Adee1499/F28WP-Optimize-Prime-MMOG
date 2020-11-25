@@ -5,7 +5,7 @@ const socketIO = require('socket.io');
 
 let io = socketIO(server);
 
-const file = 'src/client/html/index.html';
+const file = 'src/client/html/game.html';
 const options = {};
 
 const bundler = new Bundler(file, options);
