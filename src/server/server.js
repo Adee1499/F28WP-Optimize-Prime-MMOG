@@ -53,6 +53,11 @@ io.on('connection', (socket) => {
         socket.broadcast.emit('powerpill', pos);
     })
 
+    // Receive notiffication powerpill is over
+    socket.on('powerpill-over', pos => {
+        socket.broadcast.emit('powerpill-over', pos);
+    })
+
     socket.on('playereaten', pos => {
         socket.broadcast.emit('removal', pos);
     })

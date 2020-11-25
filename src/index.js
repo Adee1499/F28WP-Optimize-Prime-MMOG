@@ -104,8 +104,14 @@ function gameLoop(player) {
     // Receive powerpill updates from server
     socket.on('powerpill', pos => {
         arena.removeObject(pos, [OBJECT_TYPE.POWERPILL]);
-        if (isPacman == false){
+        if (!isPacman){
             player.isScared = true;
+        }
+    })
+
+    socket.on('powerpill-over', pos => {
+        if (!isPacman){
+            player.isScared = false;
         }
     })
 
@@ -117,9 +123,10 @@ function gameLoop(player) {
             score += 5;
             socket.emit('powerpill', player.pos);
 
+            // Powerpill timer
             clearTimeout(powerPillTimer);
             powerPillTimer = setTimeout(
-                () => (player.powerPill = false),
+                () => (player.powerPill = false, socket.emit('powerpill-over', player.pos)),
                 POWER_PILL_TIME
             );
         }
@@ -196,6 +203,21 @@ function gameLoop(player) {
             }
             if (arena.objectExist(pos + GRID_SIZE, [OBJECT_TYPE.BLINKY])) {
                 arena.removeObject(pos + GRID_SIZE, [OBJECT_TYPE.BLINKY]);
+            }
+        }
+
+        if (!scared) {
+            if (arena.objectExist(pos - 1, [OBJECT_TYPE.SCARED])) {
+                arena.removeObject(pos - 1, [OBJECT_TYPE.SCARED]);
+            }
+            if (arena.objectExist(pos + 1, [OBJECT_TYPE.SCARED])) {
+                arena.removeObject(pos + 1, [OBJECT_TYPE.SCARED]);
+            }
+            if (arena.objectExist(pos - GRID_SIZE, [OBJECT_TYPE.SCARED])) {
+                arena.removeObject(pos - GRID_SIZE, [OBJECT_TYPE.SCARED]);
+            }
+            if (arena.objectExist(pos + GRID_SIZE, [OBJECT_TYPE.SCARED])) {
+                arena.removeObject(pos + GRID_SIZE, [OBJECT_TYPE.SCARED]);
             }
         }
 
