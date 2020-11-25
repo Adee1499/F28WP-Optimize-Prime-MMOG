@@ -2,6 +2,27 @@
     box-sizing: border-box;
 }
 
+.btn-group {
+    text-align: center;
+    align-content: center;
+    display: inline;
+}
+
+.btn-group button {
+    background-color: #fcc73f;
+    border: 1px solid #fcc73f;
+    color: #ee2a29;
+    padding: 10px 24px;
+    cursor: pointer;
+    float: top;
+    font-size: 42px;
+    font-family: Impact, Charcoal, sans-serif
+}
+
+.btn-group button:hover {
+    background-color: #76cbda;
+}
+
 body {
     position: relative;
     height: 100%;
@@ -14,7 +35,7 @@ body {
 .container {
     display: block;
     justify-content: center;
-    max-width: 400px;
+    max-width: 800px;
     min-width: 250px;
     margin: auto;
     padding: 0;
@@ -45,6 +66,16 @@ body {
     padding: 0;
     text-align: center;
     width: 400px;
+}
+
+#gameover {
+    background-color: black;
+    border: 4px black solid;
+    border-radius: 25px;
+    margin: auto;
+    padding: 0;
+    text-align: center;
+    width: 800px;
 }
 
 #usernamecontainer {

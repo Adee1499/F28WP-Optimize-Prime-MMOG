@@ -302,6 +302,7 @@ function gameOver() {
     console.log('GAME OVER');
     //arena.removeObject(player.pos);
     player = null;
+    window.location.replace('gameover.html')
 }
 
 // Initialize game
