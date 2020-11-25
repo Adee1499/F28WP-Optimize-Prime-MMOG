@@ -268,6 +268,22 @@ input[type=password] {
     animation: chew 0.2s linear forwards infinite;
 }
 
+.godpacman {
+    background: rebeccapurple;
+    border: none;
+    border-radius: 50%;
+    clip-path: polygon(
+            0 0,
+            16px 0,
+            16px -4px,
+            7px 8px,
+            16px 20px,
+            16px 16px,
+            0 16px
+    );
+    animation: chew 0.2s linear forwards infinite;
+}
+
 @keyframes chew {
     50% {
         clip-path: polygon(
