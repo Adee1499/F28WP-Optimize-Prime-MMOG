@@ -274,12 +274,12 @@ input[type=password] {
     border-radius: 50%;
     clip-path: polygon(
             0 0,
-            16px 0,
-            16px -4px,
-            7px 8px,
-            16px 20px,
-            16px 16px,
-            0 16px
+            24px 0,
+            24px -6px,
+            11px 12px,
+            24px 30px,
+            24px 24px,
+            0 24px
     );
     animation: chew 0.2s linear forwards infinite;
 }
