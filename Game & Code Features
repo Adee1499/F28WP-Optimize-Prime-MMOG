@@ -1,0 +1,37 @@
+
+
+- Game features
+   
+  - Player logic  
+    - Collision with walls
+    - Rotate to movement direction
+    - animate pacman (mouth)
+    - Powered up state
+      
+  - Map
+    - Wall object w/ collision
+    - Import pre-made map(s)
+    
+  - Food 
+    - Spawning
+    - Eating/collision
+    - Not synced between clients
+  
+  - Powerup 
+    - Spawning
+    - Eating/collision
+    - Lasts limited time
+    - Synced between clients
+  
+  - Implement Pacman and Ghost players
+    - Randomly assigns player to Pacman or Ghost
+      - Pacmen can kill Ghosts when powered up
+      - Ghosts can kill Pacmen when the latter are not powered up
+    - Both can acrue points via food
+    - Only Pacmen can consume Powerup pellets
+  
+-Backend
+ - Multiple users concurrently
+ - Send/Receive data between clients
+ - Keep track of player scores
+ - Highscore board
