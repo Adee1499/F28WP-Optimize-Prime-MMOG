@@ -209,14 +209,23 @@ input[type=password] {
 
 .pinky {
     background: pink;
+    position: relative;
+    border-radius: 10px 10px 2px 2px;
+    border: none;
 }
 
 .inky {
     background: cyan;
+    position: relative;
+    border-radius: 10px 10px 2px 2px;
+    border: none;
 }
 
 .clyde {
     background: orange;
+    position: relative;
+    border-radius: 10px 10px 2px 2px;
+    border: none;
 }
 
 .pacman {
