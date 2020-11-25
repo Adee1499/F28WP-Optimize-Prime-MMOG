@@ -4,6 +4,17 @@ import Pacman from "./pacman";
 import Ghost from './ghost';
 import io from 'socket.io-client';
 
+// --- SOUNDS --- //
+import introWav from './../public/assets/pacman_beginning.wav'
+import pacmanDeath from './../public/assets/pacman_death.wav'
+import pacmanEatGhost from './../public/assets/pacman_eatghost.wav'
+
+function playAudio(audio) {
+    const soundEffect = new Audio(audio);
+    soundEffect.play();
+}
+// -------------- //
+
 // DOM elements
 const gameGrid = document.querySelector('#game');
 const scoreTable = document.querySelector('#score');
@@ -135,12 +146,14 @@ function gameLoop(player) {
         if (player.powerPill && arena.objectExist(player.pos, [OBJECT_TYPE.SCARED])) {
             arena.removeObject(player.pos, [OBJECT_TYPE.SCARED]);
             score += 100;
+            playAudio(pacmanEatGhost);
         }
 
         // check if pacman is eaten by a ghost
         if (arena.objectExist(player.pos, randGhost)) {
             gameOver();
             socket.emit('playereaten', player.pos);
+            playAudio(pacmanDeath);
         }
     }
 
@@ -150,11 +163,13 @@ function gameLoop(player) {
         if (!player.isScared && arena.objectExist(player.pos, OBJECT_TYPE.PACMAN)) {
             arena.removeObject(player.pos, [OBJECT_TYPE.PACMAN]);
             score += 100;
+            playAudio(pacmanDeath);
         }
         // if scared and gets eaten by pacman
         if (player.isScared && arena.objectExist(player.pos, OBJECT_TYPE.PACMAN)) {
             gameOver();
             socket.emit('playereaten', player.pos);
+            playAudio(pacmanEatGhost);
         }
     }
 
@@ -272,6 +287,7 @@ function startGame(){
 
     document.addEventListener('keydown', inputHandler);
 
+
     timer = setInterval(() => gameLoop(player), GLOBAL_SPEED);
 }
 
@@ -287,4 +303,5 @@ function gameOver() {
 }
 
 // Initialize game
+playAudio(introWav);
 startGame();
