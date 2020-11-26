@@ -53,6 +53,11 @@ io.on('connection', (socket) => {
         socket.broadcast.emit('powerpill', pos);
     })
 
+    // Receive new powerpill spawn position
+    socket.on('powerpill-spawn', pos => {
+        socket.broadcast.emit('powerpill-spawn', pos);
+    })
+
     // Receive notiffication powerpill is over
     socket.on('powerpill-over', pos => {
         socket.broadcast.emit('powerpill-over', pos);

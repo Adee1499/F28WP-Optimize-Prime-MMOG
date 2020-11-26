@@ -74,6 +74,7 @@ socket.on('player-connection', num => {
 // Game constants
 const GLOBAL_SPEED = 80; //ms
 const POWER_PILL_TIME = 10000; // ms
+const POWER_PILL_RESPAWN_TIME = 5000; //ms
 const arena = Arena.createArena(gameGrid, LAYOUT);
 
 // Initial setup
@@ -97,13 +98,22 @@ let currentFood = 0;
 
 const maxPowerpill = 9;
 let currentPowerpill = 9;
+let powerPillRespawnTimer = null;
 
 
 function gameLoop(player) {
     arena.moveCharacter(player);
-    while (currentFood < maxFood / 3) spawnFood();
+    while (currentFood < maxFood / 3) {
+        spawnFood()
+    }
     console.log(currentPowerpill)
-    while (currentPowerpill < maxPowerpill) setTimeout(spawnPowerpill(), 5000);
+    if (currentPowerpill < maxPowerpill) {
+        // Powerpill respawn timer
+        powerPillRespawnTimer = setTimeout(
+            () => (spawnPowerpill()),
+            POWER_PILL_RESPAWN_TIME
+        );
+    }
 
     // Set type of player
     var isPacman = null;
@@ -120,7 +130,6 @@ function gameLoop(player) {
     // Receive powerpill updates from server
     socket.on('powerpill', pos => {
         arena.removeObject(pos, [OBJECT_TYPE.POWERPILL]);
-        currentPowerpill--;
         if (!isPacman){
             player.isScared = true;
         }
@@ -136,6 +145,10 @@ function gameLoop(player) {
         else if (isPacman){
             player.isGod = false;
         }
+    })
+
+    socket.on('powerpill-spawn', pos => {
+        arena.addObject(pos, [OBJECT_TYPE.POWERPILL]);
     })
 
     if (isPacman) {
@@ -320,12 +333,16 @@ function spawnFood(){
 
 // Spawn powerpills in random empty positions
 function spawnPowerpill(){
-    console.log('spawn powerpill')
-    // Find and choose empty position
-    var index = emptyCells.splice(Math.floor(Math.random() * emptyCells.length), 1);
-    arena.addObject(index, [OBJECT_TYPE.POWERPILL]);
+    clearTimeout(powerPillRespawnTimer);
+    if (currentPowerpill < maxPowerpill) {
+        console.log('spawn powerpill')
+        // Find and choose empty position
+        var index = emptyCells.splice(Math.floor(Math.random() * emptyCells.length), 1);
+        arena.addObject(index, [OBJECT_TYPE.POWERPILL]);
+        socket.emit('powerpill-spawn', index);
 
-    currentPowerpill++;
+        currentPowerpill++;
+    }
 }
 
 function startGame(){
