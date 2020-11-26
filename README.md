@@ -3,6 +3,8 @@
 Navigate inside the root directory and run command ```npm install``` then ```npm start``` to start the server.
 The default port is 3000 so the server will start on http://localhost:3000
 
+[Demo Video](https://www.youtube.com/watch?v=CRW8lzE-pPo&feature=youtu.be)
+
 ### Code conventions:
 
 camelCase naming - e.g. likeThis
