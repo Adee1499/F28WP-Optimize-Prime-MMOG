@@ -269,7 +269,7 @@ input[type=password] {
 }
 
 .godpacman {
-    background: rebeccapurple;
+    background: #00ff08;
     border: none;
     border-radius: 50%;
     clip-path: polygon(
