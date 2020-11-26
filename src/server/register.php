@@ -20,25 +20,22 @@ $con = mysqli_connect('localhost','id15359279_prime','YC[AuLan|UHxvi0+', 'id1535
 $name = mysqli_real_escape_string($con, $_POST['user']);
 $pass = mysqli_real_escape_string($con, $_POST['password']);
 $score = 0;
+// Default $num value if SQL statement fails
 $num = 0;
 
-// PREPARED STATEMENT FOR CHECKING IF USERNAME ALREADY EXISTS
-// This wilL create a variable of the values of the row if the username is already in it
+// Prepared statement that checks if the username already exists, ? is placeholder for $name
 $userCheck = " select name from usertable where name = ?";
 $stmt = mysqli_stmt_init($con);
+// Fail case if statement
 if(!mysqli_stmt_prepare($stmt, $userCheck)){
     echo "SQL statement failed";
 }
 else{
-    mysqli_stmt_bind_param($stmt, "s", $name);
-    mysqli_stmt_execute($stmt);
-    $result = mysqli_stmt_get_result($stmt);
-    $num = mysqli_num_rows($result);
+    mysqli_stmt_bind_param($stmt, "s", $name);  // Binds parameter to the placeholder
+    mysqli_stmt_execute($stmt);                             // Execute the prepared statement
+    $result = mysqli_stmt_get_result($stmt);                // Retrieves the result from the query
+    $num = mysqli_num_rows($result);                        // Will return 1 if username exists in database
 }
-
-//$result = mysqli_query($con, $userCheck);
-
-//$num = mysqli_num_rows($result);
 
 // Statement checks that there'll be no duplicate usernames
 if($num == 1){
@@ -53,22 +50,21 @@ elseif (strlen($pass) > 20){
 }
 // Otherwise, goes ahead with the procedure of creating an account
 else {
-
-    // PREPARED STATEMENT FOR INSERTING DATA INTO DATABASE
+    // Prepared statement for inserting data into the database, series of ? acts as placeholder for
+    // $name, the eventual hashed and salted password & $score
     $reg = " INSERT INTO usertable(name, password, score) VALUES (?, ?, ?)";
-    // Creating a prepared statement for handling SQL injection to protect database
     $stmt = mysqli_stmt_init($con);
 
-    // Defining the prepared statement
+    // Fail case if statement
     if(!mysqli_stmt_prepare($stmt, $reg)){
         echo "SQL statement failed";
     }
     else{
         // Hashing and salting the password being inserted into the database
         $hashedPass = password_hash($pass, PASSWORD_DEFAULT);
-        // Binding parameters to the placeholder, types "ssi" indicates type of data being passed in
+        // Binding parameters passed into the database, "ssi" indicates the types of data being passed in order
+        // s = string, i = integer and then the $name, $hashedPass
         mysqli_stmt_bind_param($stmt, "ssi", $name, $hashedPass, $score);
-        // Runs the parameters inside the database - will register an account
         mysqli_stmt_execute($stmt);
         // Tell the user it worked!
         echo "<script type='text/javascript'>alert('Account successfully registered!')</script>";

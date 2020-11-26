@@ -10,53 +10,56 @@ $name = mysqli_real_escape_string($con, $_POST['user']);
 $pass = mysqli_real_escape_string($con, $_POST['password']);
 $num = 0;
 
-// This wilL create a variable of the values of the row if the username is already in it
-// mysqli_real_escape_string should remove special characters in the string
-// PREPARED STATEMENT THAT WILL CHECK USER EXISTS
+// Prepared statement that will check user actually exists
 $userCheck = " select name from usertable where name = ?";
 $stmt = mysqli_stmt_init($con);
+// Fail case if statement
 if(!mysqli_stmt_prepare($stmt, $userCheck)){
     echo "SQL statement failed";
 }
 else{
-    mysqli_stmt_bind_param($stmt, "s", $name);
-    mysqli_stmt_execute($stmt);
-    $result = mysqli_stmt_get_result($stmt);
-    $num = mysqli_num_rows($result);
+    mysqli_stmt_bind_param($stmt, "s", $name);  // Binds parameters to the placeholder
+    mysqli_stmt_execute($stmt);                             // Executes the prepared statement
+    $result = mysqli_stmt_get_result($stmt);                // Retrieves the result from the query
+    $num = mysqli_num_rows($result);                        // Will return 1 if username exists in database.
 }
 
-// $num will be 1 if a user of the name and password exists (both have to be correct)
+// $num will be 1 if a user of the name exists, next the password will be checked
 if ($num == 1){
+    // Prepared statement that will retrieves the password associated with the user, ? is placeholder for $name
     $hashedPass = " SELECT * FROM usertable WHERE name = ?";
     $stmt = mysqli_stmt_init($con);
+    // Fail case if statement
     if(!mysqli_stmt_prepare($stmt, $hashedPass)){
         echo "SQL statement failed";
         $hashedPw = "failed";
     }
+    // Will proceed to retrieve the encrypted value of the password
     else{
-        mysqli_stmt_bind_param($stmt, "s", $name);
-        mysqli_stmt_execute($stmt);
-        $result = mysqli_stmt_get_result($stmt);
+        mysqli_stmt_bind_param($stmt, "s", $name);      // Binds parameter to the placeholder
+        mysqli_stmt_execute($stmt);                                 // Execute the prepared statement
+        $result = mysqli_stmt_get_result($stmt);                    // Retrieves the result from the query
+
+        // I found this while() block of code unnecessary, however, I tried other ways of getting the
+        // hashedPw but only this worked from my attempts
         while($row = mysqli_fetch_assoc($result)) {
             $hashedPw = $row['password'];
         }
     }
+    // password_verify returns a boolean value if the password matches the hash and salted value from the database
     if(password_verify($pass, $hashedPw)){
-        // name = ? acts as a placeholder as the statement is prepared
-        $scoreSql = "SELECT * FROM usertable WHERE name = ?;";
-        // Creating a prepared statement for handling SQL injection to protect database
+        // Prepared statement that will retrieve the user's name and high score, ? is the placeholder for $name
+        $scoreSql = "SELECT name, score FROM usertable WHERE name = ?;";
         $stmt = mysqli_stmt_init($con);
 
-        // Defining the prepared statement
+        // Fail case if statement
         if(!mysqli_stmt_prepare($stmt, $scoreSql )){
             echo "SQL statement failed";
         }
         else{
-            // Bind parameters to the placeholder
-            mysqli_stmt_bind_param($stmt, "s", $name);
-            // Runs parameters inside the database
-            mysqli_stmt_execute($stmt);
-            $result = mysqli_stmt_get_result($stmt);
+            mysqli_stmt_bind_param($stmt, "s", $name);  // Binds parameter to the placeholder
+            mysqli_stmt_execute($stmt);                             // Execute the prepared statement
+            $result = mysqli_stmt_get_result($stmt);                // Retrieves the result from the query
 
             while($row = mysqli_fetch_assoc($result)){
                 // Retrieves the values from the database
@@ -79,7 +82,3 @@ else{
     include '../client/html/index.html';
     echo "<script type='text/javascript'>alert('Unsuccessful login attempt')</script>";
 }
-
-
-
-?>
