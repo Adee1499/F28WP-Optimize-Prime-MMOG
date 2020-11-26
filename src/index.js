@@ -95,10 +95,15 @@ for (var i = 0; i < LAYOUT.length; i++) {
 const maxFood = Math.floor(emptyCells.length / 4);
 let currentFood = 0;
 
+const maxPowerpill = 9;
+let currentPowerpill = 9;
+
 
 function gameLoop(player) {
     arena.moveCharacter(player);
     while (currentFood < maxFood / 3) spawnFood();
+    console.log(currentPowerpill)
+    while (currentPowerpill < maxPowerpill) setTimeout(spawnPowerpill(), 5000);
 
     // Set type of player
     var isPacman = null;
@@ -115,10 +120,11 @@ function gameLoop(player) {
     // Receive powerpill updates from server
     socket.on('powerpill', pos => {
         arena.removeObject(pos, [OBJECT_TYPE.POWERPILL]);
+        currentPowerpill--;
         if (!isPacman){
             player.isScared = true;
         }
-        else if (Pacman){
+        else if (isPacman){
             player.isGod = true;
         }
     })
@@ -127,7 +133,7 @@ function gameLoop(player) {
         if (!isPacman){
             player.isScared = false;
         }
-        else if (Pacman){
+        else if (isPacman){
             player.isGod = false;
         }
     })
@@ -139,6 +145,7 @@ function gameLoop(player) {
             player.powerPill = true;
             score += 5;
             socket.emit('powerpill', player.pos);
+            currentPowerpill--;
 
             // Powerpill timer
             clearTimeout(powerPillTimer);
@@ -172,7 +179,7 @@ function gameLoop(player) {
             playAudio(pacmanDeath);
         }
         // if scared and gets eaten by pacman
-        if (player.isScared && arena.objectExist(player.pos, OBJECT_TYPE.PACMAN)) {
+        if (player.isScared && arena.objectExist(player.pos, OBJECT_TYPE.GOD)) {
             gameOver();
             socket.emit('playereaten', player.pos);
             playAudio(pacmanEatGhost);
@@ -182,17 +189,18 @@ function gameLoop(player) {
     scoreTable.innerHTML = score;
 
     // Pass current position and typeof player to the server and isScared
-    socket.emit('position', {pos: player.pos, bool: isPacman, rot: player.dir.rotation, scared: player.isScared});
+    socket.emit('position', {pos: player.pos, bool: isPacman, rot: player.dir.rotation, scared: player.isScared, god: player.powerPill});
     socket.emit('previous', player.prevMovePos);
 
 
     // on position received
-    socket.on('position', ({pos, bool, rot, scared}) => {
+    socket.on('position', ({pos, bool, rot, scared, god}) => {
 
 
         // Decide whether to spawn pacman or ghost
 
-        if (bool) playerType = [OBJECT_TYPE.PACMAN];
+        if (bool && !god) playerType = [OBJECT_TYPE.PACMAN];
+        if (bool && god) playerType = [OBJECT_TYPE.GOD];
         if (!bool && !scared) playerType = randGhost;
         if (!bool && scared) playerType = [OBJECT_TYPE.SCARED];
 
@@ -243,6 +251,38 @@ function gameLoop(player) {
             }
         }
 
+        // Remove "old" pacman once he eats a powerpill
+        if (god) {
+            if (arena.objectExist(pos - 1, [OBJECT_TYPE.PACMAN])) {
+                arena.removeObject(pos - 1, [OBJECT_TYPE.PACMAN]);
+            }
+            if (arena.objectExist(pos + 1, [OBJECT_TYPE.PACMAN])) {
+                arena.removeObject(pos + 1, [OBJECT_TYPE.PACMAN]);
+            }
+            if (arena.objectExist(pos - GRID_SIZE, [OBJECT_TYPE.PACMAN])) {
+                arena.removeObject(pos - GRID_SIZE, [OBJECT_TYPE.PACMAN]);
+            }
+            if (arena.objectExist(pos + GRID_SIZE, [OBJECT_TYPE.PACMAN])) {
+                arena.removeObject(pos + GRID_SIZE, [OBJECT_TYPE.PACMAN]);
+            }
+        }
+
+        // Once powerup ends, remove god pacman
+        if (!god) {
+            if (arena.objectExist(pos - 1, [OBJECT_TYPE.GOD])) {
+                arena.removeObject(pos - 1, [OBJECT_TYPE.GOD]);
+            }
+            if (arena.objectExist(pos + 1, [OBJECT_TYPE.GOD])) {
+                arena.removeObject(pos + 1, [OBJECT_TYPE.GOD]);
+            }
+            if (arena.objectExist(pos - GRID_SIZE, [OBJECT_TYPE.GOD])) {
+                arena.removeObject(pos - GRID_SIZE, [OBJECT_TYPE.GOD]);
+            }
+            if (arena.objectExist(pos + GRID_SIZE, [OBJECT_TYPE.GOD])) {
+                arena.removeObject(pos + GRID_SIZE, [OBJECT_TYPE.GOD]);
+            }
+        }
+
 
         arena.addObject(pos, playerType);
 
@@ -268,7 +308,7 @@ function gameLoop(player) {
 
 // Spawn a food in random empty location
 function spawnFood(){
-// Find and choose empty position
+    // Find and choose empty position
     var index = emptyCells.splice(Math.floor(Math.random() * emptyCells.length), 1);
 
     // Create and position food
@@ -276,6 +316,16 @@ function spawnFood(){
     arena.addObject(index, [OBJECT_TYPE.FOOD]);
 
     currentFood++;
+}
+
+// Spawn powerpills in random empty positions
+function spawnPowerpill(){
+    console.log('spawn powerpill')
+    // Find and choose empty position
+    var index = emptyCells.splice(Math.floor(Math.random() * emptyCells.length), 1);
+    arena.addObject(index, [OBJECT_TYPE.POWERPILL]);
+
+    currentPowerpill++;
 }
 
 function startGame(){
