@@ -151,6 +151,10 @@ function gameLoop(player) {
         arena.addObject(pos, [OBJECT_TYPE.POWERPILL]);
     })
 
+    socket.on('scared-ghost', pos => {
+        arena.removeObject(pos, [OBJECT_TYPE.BLINKY]);
+    })
+
     if (isPacman) {
         // check if pacman eats powerpill
         if (arena.objectExist(player.pos, OBJECT_TYPE.POWERPILL)) {
@@ -185,6 +189,10 @@ function gameLoop(player) {
 
     // if is ghost
     if (!isPacman) {
+        // emit: isScared and pos
+        if (player.isScared) {
+            socket.emit('scared-ghost', player.pos);
+        }
         // if not scared and eats pacman
         if (!player.isScared && arena.objectExist(player.pos, OBJECT_TYPE.PACMAN)) {
             arena.removeObject(player.pos, [OBJECT_TYPE.PACMAN]);

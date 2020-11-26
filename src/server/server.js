@@ -48,6 +48,11 @@ io.on('connection', (socket) => {
         socket.broadcast.emit('pellets', currentFood);
 
     })
+
+    socket.on('scared-ghost', pos => {
+        socket.broadcast.emit('scared-ghost', pos);
+    })
+
     // Receive eaten powerpill position and broadcast to clients
     socket.on('powerpill', pos => {
         socket.broadcast.emit('powerpill', pos);
