@@ -1,27 +1,28 @@
-
+List of features in the game, both front and back-end
 
 - Game features
    
-  - Player logic  
+  - Player logic
     - Collision with walls
-    - Rotate to movement direction
-    - animate pacman (mouth)
+    - Rotate to face movement direction
+    - Pacmen animated
     - Powered up state
       
   - Map
-    - Wall object w/ collision
-    - Import pre-made map(s)
+    - Wall object w/ collision to limit players
+    - Premade map imported
     
   - Food 
-    - Spawning
-    - Eating/collision
     - Not synced between clients
+    - Respawn when consumed so there's a contistent number at all times
   
   - Powerup 
-    - Spawning
-    - Eating/collision
+    - When consumed power up Pacmen, allows them to kill Ghosts
+    - Changes Pacman colour to be obvious to other players
+    - Also changes Ghost colour to classic blue
     - Lasts limited time
     - Synced between clients
+    - Respawn every 2 minutes
   
   - Implement Pacman and Ghost players
     - Randomly assigns player to Pacman or Ghost
