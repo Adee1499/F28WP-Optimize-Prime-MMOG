@@ -118,7 +118,7 @@ function gameLoop(player) {
         if (!isPacman){
             player.isScared = true;
         }
-        else if (Pacman){
+        else if (isPacman){
             player.isGod = true;
         }
     })
@@ -127,7 +127,7 @@ function gameLoop(player) {
         if (!isPacman){
             player.isScared = false;
         }
-        else if (Pacman){
+        else if (isPacman){
             player.isGod = false;
         }
     })
@@ -182,17 +182,18 @@ function gameLoop(player) {
     scoreTable.innerHTML = score;
 
     // Pass current position and typeof player to the server and isScared
-    socket.emit('position', {pos: player.pos, bool: isPacman, rot: player.dir.rotation, scared: player.isScared});
+    socket.emit('position', {pos: player.pos, bool: isPacman, rot: player.dir.rotation, scared: player.isScared, god: player.powerPill});
     socket.emit('previous', player.prevMovePos);
 
 
     // on position received
-    socket.on('position', ({pos, bool, rot, scared}) => {
+    socket.on('position', ({pos, bool, rot, scared, god}) => {
 
 
         // Decide whether to spawn pacman or ghost
 
-        if (bool) playerType = [OBJECT_TYPE.PACMAN];
+        if (bool && !god) playerType = [OBJECT_TYPE.PACMAN];
+        if (bool && god) playerType = [OBJECT_TYPE.GOD];
         if (!bool && !scared) playerType = randGhost;
         if (!bool && scared) playerType = [OBJECT_TYPE.SCARED];
 
@@ -240,6 +241,38 @@ function gameLoop(player) {
             }
             if (arena.objectExist(pos + GRID_SIZE, [OBJECT_TYPE.SCARED])) {
                 arena.removeObject(pos + GRID_SIZE, [OBJECT_TYPE.SCARED]);
+            }
+        }
+
+        // Remove "old" pacman once he eats a powerpill
+        if (god) {
+            if (arena.objectExist(pos - 1, [OBJECT_TYPE.PACMAN])) {
+                arena.removeObject(pos - 1, [OBJECT_TYPE.PACMAN]);
+            }
+            if (arena.objectExist(pos + 1, [OBJECT_TYPE.PACMAN])) {
+                arena.removeObject(pos + 1, [OBJECT_TYPE.PACMAN]);
+            }
+            if (arena.objectExist(pos - GRID_SIZE, [OBJECT_TYPE.PACMAN])) {
+                arena.removeObject(pos - GRID_SIZE, [OBJECT_TYPE.PACMAN]);
+            }
+            if (arena.objectExist(pos + GRID_SIZE, [OBJECT_TYPE.PACMAN])) {
+                arena.removeObject(pos + GRID_SIZE, [OBJECT_TYPE.PACMAN]);
+            }
+        }
+
+        // Once powerup ends, remove god pacman
+        if (!god) {
+            if (arena.objectExist(pos - 1, [OBJECT_TYPE.GOD])) {
+                arena.removeObject(pos - 1, [OBJECT_TYPE.GOD]);
+            }
+            if (arena.objectExist(pos + 1, [OBJECT_TYPE.GOD])) {
+                arena.removeObject(pos + 1, [OBJECT_TYPE.GOD]);
+            }
+            if (arena.objectExist(pos - GRID_SIZE, [OBJECT_TYPE.GOD])) {
+                arena.removeObject(pos - GRID_SIZE, [OBJECT_TYPE.GOD]);
+            }
+            if (arena.objectExist(pos + GRID_SIZE, [OBJECT_TYPE.GOD])) {
+                arena.removeObject(pos + GRID_SIZE, [OBJECT_TYPE.GOD]);
             }
         }
 

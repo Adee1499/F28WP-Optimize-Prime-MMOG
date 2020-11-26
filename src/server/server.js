@@ -36,10 +36,10 @@ io.on('connection', (socket) => {
     socket.emit('player-number', socket.id)
 
     // Receive player positions and type
-    socket.on('position', ({pos, bool, rot, scared}) => {
+    socket.on('position', ({pos, bool, rot, scared, god}) => {
         // console.log(socket.id + `'s current position is ${pos}`);
         // emit to other players
-        socket.broadcast.emit('position', ({pos, bool, rot, scared}));
+        socket.broadcast.emit('position', ({pos, bool, rot, scared, god}));
     })
 
 
