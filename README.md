@@ -5,7 +5,7 @@ The default port is 3000 so the server will start on http://localhost:3000
 
 [Demo Video](https://www.youtube.com/watch?v=CRW8lzE-pPo&feature=youtu.be)
 
-Developed as part of a team for university coursework (Web Programming course). The objective was to develop an online multiplayer 2D browser game using strictly DOM manipulation, and without using any game engines or the HTML Canvas element.
+Developed as part of a team for university coursework (Web Programming course). [Original repo](https://github.com/N0m0turtle/F28WP-Optimize-Prime-MMOG)The objective was to develop an online multiplayer 2D browser game using strictly DOM manipulation, and without using any game engines or the HTML Canvas element.
 
 <br>
 
