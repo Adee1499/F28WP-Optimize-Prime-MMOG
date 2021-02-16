@@ -7,7 +7,7 @@ The default port is 3000 so the server will start on http://localhost:3000
 
 Developed as part of a team for university coursework (Web Programming course). The objective was to develop an online multiplayer 2D browser game using strictly DOM manipulation, and without using any game engines or the HTML Canvas element.
 
-<br><br>
+<br>
 
 The game runs on Node.js, using npm as a package manager (Babel for backwards compatibility and Socket.io for client-server communication). Players are randomly assigned either a ghost or a Pacman (probability percentage can be edited in the source code). Both types can eat "food" for points, however only Pacmen can eat the powerup pills, and once they do they are able to eat ghosts. Server is mainly acting as a relay, sending information between all the clients. See the GitHub repository for more insight.
 
