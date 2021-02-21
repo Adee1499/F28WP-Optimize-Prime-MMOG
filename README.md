@@ -9,7 +9,7 @@ Developed as part of a team for university coursework (Web Programming course) -
 
 <br>
 
-The game runs on Node.js, using npm as a package manager (Babel for backwards compatibility and Socket.io for client-server communication). Players are randomly assigned either a ghost or a Pacman (probability percentage can be edited in the source code). Both types can eat "food" for points, however only Pacmen can eat the powerup pills, and once they do they are able to eat ghosts. Server is mainly acting as a relay, sending information between all the clients.
+The game runs on Node.js, using npm as a package manager (Babel for backwards compatibility, Parcel for bundling JS files together, and Socket.io for client-server communication). Players are randomly assigned either a ghost or a Pacman (probability percentage can be edited in the source code). Both types can eat "food" for points, however only Pacmen can eat the powerup pills, and once they do they are able to eat ghosts. Server is mainly acting as a relay, sending information between all the clients.
 
 All the game logic happens on client side. 'server/index.js' bundles all javascript files together and detects a socket connection. All of the 4 main scripts in '/src' are on client side. 
 <br><br>
